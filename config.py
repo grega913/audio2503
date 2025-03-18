@@ -3,9 +3,6 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-#Jinja2 directory . . needed in routers and main
-from fastapi.templating import Jinja2Templates
-from jinja2 import FileSystemLoader
 
 #templates = FileSystemLoader("templates")
 

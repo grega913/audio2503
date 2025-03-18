@@ -59,6 +59,7 @@ from routes.routes_stripe import stripe_router
 from routes.routes_auth import auth_router
 from routes.routes_websockets import websocket_router
 from routes.routes_basic import basic_router
+from routes.routes_audio import audio_router
 
 app = FastAPI(lifespan=lifespan)
 
@@ -66,6 +67,7 @@ app.include_router(stripe_router)
 app.include_router(auth_router)
 app.include_router(websocket_router)
 app.include_router(basic_router)
+app.include_router(audio_router)
 
 
 # mapping static file

@@ -176,6 +176,8 @@ static/my_web_app/node_modules/
 # Webpack bundles
 static/my_web_app/dist/
 
+static/my_web_app/js/
+
 #Firebase
 firebase_auth.json
 firebase_config.py
