@@ -167,8 +167,22 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# Ruff stuff:
-.ruff_cache/
-
 # PyPI configuration file
 .pypirc
+
+# Node modules for the my_web_app, which is basically an app by itself - this way we are keeping frontend seperated from backend
+static/my_web_app/node_modules/
+
+# Webpack bundles
+static/my_web_app/dist/
+
+#Firebase
+firebase_auth.json
+firebase_config.py
+
+# Google Cloud Functions
+gc_functions/
+
+# Aider 
+.aider*
+startAiderForAudio2503.cmd

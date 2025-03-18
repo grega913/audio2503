@@ -1,0 +1,112 @@
+/* Message list styling */
+#messages li {
+    list-style-type: none;
+    padding: 12px 16px;
+    margin: 8px 0;
+    border-radius: 8px;
+    max-width: 70%;
+    word-wrap: break-word;
+    position: relative;
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* Alternate message background colors */
+#messages li:nth-child(odd) {
+    background-color: #e3f2fd;
+    align-self: flex-start;
+}
+
+#messages li:nth-child(even) {
+    background-color: #f5f5f5;
+    align-self: flex-end;
+}
+
+/* Message timestamp styling */
+#messages li::after {
+    content: attr(data-timestamp);
+    display: block;
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 4px;
+    text-align: right;
+}
+
+/* Animation for new messages */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hover effect */
+#messages li:hover {
+    transform: scale(1.02);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+}
+
+/* Chat input container */
+.chat-input-container {
+    display: flex;
+    align-items: flex-end;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 8px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+}
+
+#messageText {
+    flex: 1;
+    border: none;
+    padding: 12px 48px 12px 12px; /* Right padding for button */
+    font-size: 1rem;
+    background: transparent;
+    resize: none;
+    height: 40px; /* Fixed initial height */
+    max-height: 200px;
+    overflow-y: hidden; /* Hide scrollbar initially */
+    width: 100%;
+    margin: 0;
+    line-height: 1.5;
+    white-space: pre; /* Preserve whitespace but allow wrapping */
+}
+
+#messageText:focus {
+    outline: none;
+}
+
+.send-button {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: #6b7280;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    width: 40px;
+    height: 40px;
+}
+
+.send-button:hover {
+    color: #3b82f6;
+}
+
+.send-button svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}

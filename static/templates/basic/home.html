@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', path='/css/styles.css') }}" rel="stylesheet">
+
+    <title>Home</title>
+
+
+  </head>
+
+  <body>
+
+    {% include 'basic/navbar_public.html' %}
+
+    <main>
+
+      <h1>Home Page</h1>
+
+      <p>This is a public page that anyone can view.</p>
+      <p>Use this template to create and customize more public pages for your app.</p>
+
+    </main>
+
+    {% include 'basic/footer.html' %}
+
+    
+
+  </body>
+
+</html>
+
+

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %} Dash {% endblock %}
+
+{% block navbar %} {% include 'basic/navbar_private.html' %} {% endblock %}
+
+{% block content %}
+    {% from "macros.html" import display_session_data %}
+
+    <h1>Dashboard (Protected Page)</h1>
+    <p>This is a protected page that requires authenication to view.</p>
+    <p>Use this template to create and customize more protected pages for your app.</p>
+
+    {{ display_session_data(session_data=session_data) }}
+
+{% endblock %}
+
+{% block bodyscripts %}
+    <script src="{{ url_for('static', path='/my_web_app/dist/login.bundle.js') }}"></script>
+    <script src="{{ url_for('static', path='/my_web_app/dist/firebaseConfig.bundle.js') }}"></script>
+{% endblock %}

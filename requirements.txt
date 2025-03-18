@@ -1,0 +1,10 @@
+icecream
+requests
+fastapi[standard]
+fastapi-sessions
+starlette
+uvicorn
+aider-chat
+flask
+firebase_admin
+stripe

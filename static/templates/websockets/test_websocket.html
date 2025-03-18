@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+    <script src="{{ url_for('static', path='/my_web_app/js/ws.js') }}"></script>
+    <link href="{{ url_for('static', path='/css/styles.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='/css/chat.css') }}" rel="stylesheet">
+
+
+{% endblock %}
+
+{% block title %}Test_WebSocket{% endblock %}
+
+
+{% block content %}
+    <h1>WebSocket Chat</h1>
+    <div class="chat-input-container">
+        <textarea id="messageText" autocomplete="off" placeholder="Type your message..."></textarea>
+        <button class="send-button" onclick="sendMessage(event)">
+            <svg viewBox="0 -960 960 960">
+                <path d="M120-160v-240l320-80-320-80v-240l760 320-760 320Z"></path>
+            </svg>
+        </button>
+    </div>
+    <ul id='messages'>
+    </ul>
+{% endblock %}
+
+
