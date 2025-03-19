@@ -8,3 +8,7 @@ aider-chat
 flask
 firebase_admin
 stripe
+langgraph
+langchain_groq
+langchain_deepseek
+langchain_openai

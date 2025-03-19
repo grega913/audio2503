@@ -3,11 +3,17 @@
 - **FastApi** - for defining routes
 - **Firebase** - backened for authentication, database with Firestore, Storage
 - **Stripe** - payments
+- **Bulma** - css
+
+## - - - - - -
+
+## 20250319 - LangChain - starting with Graphs
+
+1. lang/1 - the simplest possible case working with StreamingResponse in "/api/lang/1"
 
 ## 20250318
 
-- Websocket problems with webpack bundle. When bundled, the js function was not found by browser, so we have pure js file (not bundled) imported in tst_websocket.html.
-
+- Websocket problems with webpack bundle. When bundled, the js function was not found by browser, so we have pure js file (not bundled) imported in test_websocket.html.
 
 ## Why FastApi
 

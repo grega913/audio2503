@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+    />
+    <title>Hello Bulma!</title>
+  </head>
+
+  <body>
+    <section class="section">
+      <div class="container">
+        <h1 class="title">Hello World</h1>
+        <p class="subtitle">My first website with <strong>Bulma</strong>!</p>
+      </div>
+    </section>
+    <h2 class="title">Buttons</h2>
+    <section class="sestion">
+      <button class="button">Button</button>
+      <button class="button is-primary">Button</button>
+      <button class="button is-primary">Button</button>
+      <button class="button is-link">Button</button>
+      <button class="button is-info">Button</button>
+      <button class="button is-success">Button</button>
+      <button class="button is-warning">Button</button>
+      <button class="button is-danger">Button</button>
+      <button class="button is-small">Button</button>
+      <button class="button">Button</button>
+      <button class="button is-medium">Button</button>
+      <button class="button is-large">Button</button>
+      <button class="button is-primary is-outlined">Button</button>
+      <button class="button is-loading">Button</button>
+      <button class="button is-primary is-small" disabled>Button</button>
+    </section>
+
+    <h3 class="title">Columns</h3>
+    <div class="columns">
+      <div class="column">
+        <button class="button is-primary is-small" disabled>Button</button>
+        <button class="button is-danger is-outlined is-large">Button</button>
+      </div>
+      <div class="column">
+        <button class="button is-info is-loading">Button</button>
+      </div>
+      <div class="column">
+        <button class="button is-danger is-outlined is-large">Button</button>
+      </div>
+      <div class="column">
+        <button class="button is-info is-loading">Button</button>
+      </div>
+      <div class="column"><button class="button" disabled>Button</button></div>
+    </div>
+
+    <h3>Bulma Sass Mixins</h3>
+    <span class="bulma-arrow-mixin"></span>
+    <button class="bulma-burger-mixin">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <button class="bulma-delete-mixin is-small"></button>
+    <button class="bulma-delete-mixin"></button>
+    <button class="bulma-delete-mixin is-medium"></button>
+    <button class="bulma-delete-mixin is-large"></button>
+
+    <h3 class="title">Block</h3>
+    <div class="block">This text is within a <strong>block</strong>.</div>
+    <div class="block">
+      This text is within a <strong>second block</strong>. Lorem ipsum dolor sit
+      amet, consectetur adipiscing elit. Aenean efficitur sit amet massa
+      fringilla egestas. Nullam condimentum luctus turpis.
+    </div>
+    <div class="block">
+      This text is within a <strong>third block</strong>. This block has no
+      margin at the bottom.
+    </div>
+    <p>
+      Without using block, the HTML elements would have no space between them:
+    </p>
+    <div>This text is <em>not</em> within a <strong>block</strong>.</div>
+    <div>
+      This text <em>isn't</em> within a <strong>block</strong> either. Lorem
+      ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit
+      amet massa fringilla egestas. Nullam condimentum luctus turpis.
+    </div>
+    <div>This text is also <em>not</em> within a <strong>block</strong>.</div>
+
+    <h3 class="title">Colors</h3>
+    <button class="button is-white">White</button>
+    <button class="button is-light">Light</button>
+    <button class="button is-dark">Dark</button>
+    <button class="button is-black">Black</button>
+    <button class="button is-text">Text</button>
+    <button class="button is-ghost">Ghost</button>
+
+    <div class="buttons">
+      <button class="button is-primary">Primary</button>
+      <button class="button is-link">Link</button>
+    </div>
+
+    <div class="buttons">
+      <button class="button is-info bulma-primary">Info</button>
+      <button class="button is-success">Success</button>
+      <button class="button is-warning">Warning</button>
+      <button class="button is-danger">Danger</button>
+    </div>
+
+    <h4 class="title">Icon</h4>
+    <span class="icon">
+      <i class="fas fa-home"></i>
+    </span>
+    <section>
+      <h3 class="title">Skeleton Blocks and Lines - how does this work</h3>
+      <div class="skeleton-block">
+        The skeleton block is a simple block element with a pulsating
+        background. It has a minimum height of 4.5em.
+      </div>
+      <div class="skeleton-block">
+        Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+        Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh,
+        ut fermentum massa justo sit amet risus. Donec sed odio dui. Nullam quis
+        risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus
+        et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor
+        id nibh ultricies vehicula ut id elit.
+      </div>
+      <div class="skeleton-lines">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </section>
+
+    <div class="buttons">
+      <button class="button is-skeleton">Button</button>
+      <button class="button is-link is-skeleton">Link</button>
+      <button class="button is-primary is-skeleton">Primary</button>
+      <button class="button is-success is-skeleton">Success</button>
+      <button class="button is-info is-skeleton">Info</button>
+      <button class="button is-warning is-skeleton">Warning</button>
+      <button class="button is-danger is-skeleton">Danger</button>
+    </div>
+    <h3 class="title">Loading example</h3>
+    <span class="icon is-skeleton">
+      <i class="fas fa-reply"></i>
+    </span>
+
+    <figure class="image is-16x16 is-skeleton">
+      <img alt="Placeholder" src="https://placehold.co/16x16" />
+    </figure>
+
+    <figure class="image is-32x32 is-skeleton">
+      <img alt="Placeholder" src="https://placehold.co/32x32" />
+    </figure>
+
+    <figure class="image is-64x64 is-skeleton">
+      <img alt="Placeholder" src="https://placehold.co/64x64" />
+    </figure>
+
+    <figure class="image is-128x128 is-skeleton">
+      <img alt="Placeholder" src="https://placehold.co/128x128" />
+    </figure>
+
+    <article class="media">
+      <figure class="media-left">
+        <p class="image is-64x64 is-skeleton">
+          <img src="https://placehold.co/128x128" alt="Placeholder image" />
+        </p>
+      </figure>
+      <div class="media-content">
+        <div class="content is-skeleton">
+          <p>
+            <strong>John Smith</strong> <small>@johnsmith</small>
+            <small>31m</small>
+            <br />
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
+            ornare magna eros, eu pellentesque tortor sociis natoque penatibus
+            et magnis dis parturient montes, nascetur ridiculus mus est non
+            commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem
+            nec elit vestibulum ut. Maecenas non massa sem. Etiam finibus odio
+            quis feugiat facilisis.
+          </p>
+        </div>
+        <nav class="level is-mobile">
+          <div class="level-left">
+            <a class="level-item"
+              ><span class="icon is-small is-skeleton"
+                ><i class="fas fa-reply"></i></span
+            ></a>
+            <a class="level-item"
+              ><span class="icon is-small is-skeleton"
+                ><i class="fas fa-retweet"></i></span
+            ></a>
+            <a class="level-item"
+              ><span class="icon is-small is-skeleton"
+                ><i class="fas fa-heart"></i></span
+            ></a>
+          </div>
+        </nav>
+      </div>
+      <div class="media-right">
+        <button aria-label="delete" class="delete is-skeleton"></button>
+      </div>
+    </article>
+
+    <section>
+      <div class="field">
+        <div class="control is-small is-loading">
+          <input
+            class="input is-small"
+            type="text"
+            placeholder="Small loading input"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <div class="control is-loading">
+          <input class="input" type="text" placeholder="Normal loading input" />
+        </div>
+      </div>
+      <div class="field">
+        <div class="control is-medium is-loading">
+          <input
+            class="input is-medium"
+            type="text"
+            placeholder="Medium loading input"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <div class="control is-large is-loading">
+          <input
+            class="input is-large"
+            type="text"
+            placeholder="Large loading input"
+          />
+        </div>
+      </div>
+    </section>
+
+    <h3 class="title">Form</h3>
+
+    <div class="field">
+      <label class="label">Name</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Text input" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Username</label>
+      <div class="control has-icons-left has-icons-right">
+        <input
+          class="input is-success"
+          type="text"
+          placeholder="Text input"
+          value="bulma"
+        />
+        <span class="icon is-small is-left">
+          <i class="fas fa-user"></i>
+        </span>
+        <span class="icon is-small is-right">
+          <i class="fas fa-check"></i>
+        </span>
+      </div>
+      <p class="help is-success">This username is available</p>
+    </div>
+
+    <div class="field">
+      <label class="label">Email</label>
+      <div class="control has-icons-left has-icons-right">
+        <input
+          class="input is-danger"
+          type="email"
+          placeholder="Email input"
+          value="hello@"
+        />
+        <span class="icon is-small is-left">
+          <i class="fas fa-envelope"></i>
+        </span>
+        <span class="icon is-small is-right">
+          <i class="fas fa-exclamation-triangle"></i>
+        </span>
+      </div>
+      <p class="help is-danger">This email is invalid</p>
+    </div>
+
+    <div class="field">
+      <label class="label">Subject</label>
+      <div class="control">
+        <div class="select">
+          <select>
+            <option>Select dropdown</option>
+            <option>With options</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Message</label>
+      <div class="control">
+        <textarea class="textarea" placeholder="Textarea"></textarea>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <label class="checkbox">
+          <input type="checkbox" />
+          I agree to the <a href="#">terms and conditions</a>
+        </label>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <label class="radio">
+          <input type="radio" name="question" />
+          Yes
+        </label>
+        <label class="radio">
+          <input type="radio" name="question" />
+          No
+        </label>
+      </div>
+    </div>
+
+    <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-link">Submit</button>
+      </div>
+      <div class="control">
+        <button class="button is-link is-light">Cancel</button>
+      </div>
+    </div>
+
+    <h3 class="title">Grid</h3>
+    <div class="grid">
+        <div class="cell">Cell 1</div>
+        <div class="cell">Cell 2</div>
+        <div class="cell">Cell 3</div>
+        <div class="cell">Cell 4</div>
+        <div class="cell">Cell 5</div>
+        <div class="cell">Cell 6</div>
+        <div class="cell">Cell 7</div>
+        <div class="cell">Cell 8</div>
+        <div class="cell">Cell 9</div>
+        <div class="cell">Cell 1004</div>
+        <div class="cell">Cell 11</div>
+        <div class="cell">Cell 12</div>
+        <div class="cell">Cell 13</div>
+        <div class="cell">Cell 14</div>
+        <div class="cell">Cell 15</div>
+        <div class="cell">Cell 16</div>
+        <div class="cell">Cell 17</div>
+        <div class="cell">Cell 18</div>
+        <div class="cell">Cell 19</div>
+        <div class="cell">Cell 20</div>
+        <div class="cell">Cell 21</div>
+        <div class="cell">Cell 22</div>
+        <div class="cell">Cell 23</div>
+        <div class="cell">Cell 24</div>
+    </div>
+
+
+  </body>
+</html>

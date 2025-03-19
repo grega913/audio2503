@@ -23,6 +23,10 @@
     --element-padding: 0.8em;
 
     --maximum-width: 320px;
+
+    
+
+
 }
 
 html,
@@ -145,11 +149,6 @@ main {
     display: block;
 }
 
-
-/* added 20250318*/
-.dropdown-content.show {
-    display: block;
-}
 
 
 
@@ -388,9 +387,6 @@ footer {
 
 /* Responsive */
 @media screen and (max-width: 600px) {
-
-
-
 
     .navbar-right {
         position: fixed;

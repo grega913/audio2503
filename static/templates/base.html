@@ -7,12 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="{{ url_for('static', path='/css/styles.css') }}" rel="stylesheet">
-
     {% block head %}{% endblock %}
-
     <title>{% block title %}Base{% endblock %}</title>        
 
 </head>
@@ -20,23 +18,30 @@
 <body>
 
     {% block navbar %} {% include 'basic/navbar_public.html' %} {% endblock %}
-
-    
     
     <main>
         
-    {% block content %}
-     <div><p>Content here</p></div>
-    {% endblock %}
+        {% block content %}
+        <div><p>Content here</p></div>
+        {% endblock %}
+
+       
         
     </main>
     
     {% include 'basic/footer.html' %}
 
 
-    <script src="{{ url_for('static', path='/my_web_app/dist/scripts.bundle.js') }}"></script>
+    
 
-    {% block bodyscripts %}{% endblock %}
+{% block bodyscripts %}
+<script src="{{ url_for('static', path='/my_web_app/js/firebase-config.js') }}"></script>
+<script src="{{ url_for('static', path='/my_web_app/js/login-auth.js') }}"></script>
+<script src="{{ url_for('static', path='/my_web_app/js/scripts.js') }}"></script>
+<script src="{{ url_for('static', path='/my_web_app/js/stripe.js') }}"></script>
+<script src="{{ url_for('static', path='/my_web_app/js/ws.js') }}"></script>
+<script src="{{ url_for('static', path='/my_web_app/js/lang.js') }}"></script>
+{% endblock %}
 
 </body>
 

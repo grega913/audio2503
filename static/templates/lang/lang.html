@@ -1,0 +1,45 @@
+{% extends "base.html" %} 
+
+{% block head %}
+    <linkhref="{{ url_for('static', path='/css/bulma.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+
+
+{% block title %} Lang {{ item_id }} {% endblock %}
+
+
+
+    {% block content %}
+    <div>
+        <p>Content here - this is lang.html</p>
+    </div>
+    
+    <section>
+        {% if item_id %}
+    
+    
+        {% if item_id == '1' %}
+        {% include "lang/lang1.html" %}
+    
+        {% elif item_id == '2' %}
+        {% include "lang/lang2.html" %}
+    
+        {% else %}
+        <h1>Item_id is neither 1 or 2, but: {{ item_id }}</h1>
+        {% endif %}
+    
+    
+    
+        {% else %}
+        <h1>No Item ID provided</h1>
+        {% endif %}
+    
+    
+    
+    </section>
+    
+    
+    
+    
+    {% endblock %}
