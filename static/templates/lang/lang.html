@@ -2,18 +2,13 @@
 
 {% block head %}
     <linkhref="{{ url_for('static', path='/css/bulma.css') }}" rel="stylesheet"/>
+    <linkhref="{{ url_for('static', path='/css/chat.css' ) }}" rel="stylesheet" />
 {% endblock %}
-
-
 
 {% block title %} Lang {{ item_id }} {% endblock %}
 
 
-
     {% block content %}
-    <div>
-        <p>Content here - this is lang.html</p>
-    </div>
     
     <section>
         {% if item_id %}

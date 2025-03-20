@@ -5,7 +5,8 @@ module.exports = {
     login: './js/login-auth.js',  // Output: login.bundle.js
     firebaseConfig: './js/firebase-config.js', //output: firebaseConfig.bundle.js
     stripe: './js/stripe.js',
-    scripts: './js/scripts.js'
+    scripts: './js/scripts.js',
+    lang: './js/lang.js'
   },
   output: {
     filename: '[name].bundle.js', // [name] will be replaced with the entry key

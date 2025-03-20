@@ -7,6 +7,23 @@
 
 ## - - - - - -
 
+## 20250320 - [Simplest Possible Graph working](https://langchain-ai.github.io/langgraph/tutorials/introduction/)
+
+Relevant Files and functions:
+
+- **routes\routes_lang.py** - all routes for lang related things defined here
+
+  1. class RouterWithState(APiRouter) - adding state to the APIRouter. In State we monitor if graphs have been compiled, so that this step only runs once - before in first request being made. lang_router.state.graphP1 is instance of class GraphP1()
+  2. def compile_graph_once(router) - function that runs compile method on class instance that is saved in router.state
+  3. route lang_router.get("lang/{item_id}") - get method route for displaying html template
+     - lang/1 -> returning lang/lang.html
+     - lanf/2 -> returning lang/lang.html
+     - we have a "router in " lang/lang.html that displays appropriate html based on item_id
+
+- **lang/qs/part1.py** - here we have defined a GraphP1 class which represent the graph in PArt1 of the QuickStart module. It has init method, where we set vars to check if the graph has been compiled. Then it has def compile - this is the most important method, as here we see the way graph is being compiled. This is based on the LangGraph Quick Start instructions. After the line "self.graph = self.graph_builder.compile()" there's another command - "self.compiled==true" - this one is important for letting know the variable in rotes_lang that the compiled graph exists and we can perform stream_graph_results method in this route: @lang_router.post("/api/lang/1").
+
+- **static/js/lang.js** - here we have a js part - basically here we have asimple function that is trigered when user clicks submit on any of the html templates. We plan to have 6 templates. This than handlesLangFormSubmit by fetching a route (/api/lang/{item_id} - and writes response to messages. This step will be identicyl for all 6 graphs)
+
 ## 20250319 - LangChain - starting with Graphs
 
 1. lang/1 - the simplest possible case working with StreamingResponse in "/api/lang/1"
