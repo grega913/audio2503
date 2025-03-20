@@ -1,3 +1,29 @@
 <div class="section bg-custom-light">
     <p>Lang 2</p>
+    <h1>Welcome to Part 2</h1>
+    
+    <p>
+        This is Part 2 of tutorial from
+        <a href="https://langchain-ai.github.io/langgraph/tutorials/introduction/">
+            https://langchain-ai.github.io/langgraph/tutorials/introduction/
+        </a>
+    </p>
+    
+    <p>Example of a more complex Graph</p>
+    <p>Be careful how to display data in html/js when the function is streaming from graph!!!</p>
+    
+    <img src="{{ url_for('static', path='images/graph2.jpeg') }}" />
+    
+    <div id="messages"></div>
+
+    <form class="form" id="myForm" data-item-id="2" data-messages-area="messages">
+        <div class="field">
+            <div class="control">
+                <input class="input" type="text" id="myName" name="name" placeholder="Enter your name">
+            </div>
+        </div>
+        <div class="field">
+            <button class="button is-primary" type="submit">Submit</button>
+        </div>
+    </form>
 </div>
