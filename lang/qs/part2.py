@@ -1,14 +1,14 @@
 from typing import Annotated
 from langchain_groq import ChatGroq
 from langchain_community.tools.tavily_search import TavilySearchResults
-from config import TAVILY_API_KEY
+from ..config import TAVILY_API_KEY
 from langchain_core.messages import BaseMessage
 from typing_extensions import TypedDict
 from langgraph.graph import StateGraph
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
 
-from config import TAVILY_API_KEY
+from ..config import TAVILY_API_KEY
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
