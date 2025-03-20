@@ -5,7 +5,10 @@
 - **Stripe** - payments
 - **Bulma** - css
 
-## - - - - - -
+## 20250320
+
+- **Added Part 2** - Chatbot with Tools
+- **Added Part 3** - Adding Memory To Chatbor
 
 ## 20250320 - [Simplest Possible Graph working](https://langchain-ai.github.io/langgraph/tutorials/introduction/)
 

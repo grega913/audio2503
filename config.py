@@ -17,3 +17,5 @@ stripe_keys = {
 }
 
 YOUR_DOMAIN = 'http://localhost:8000'
+
+TAVILY_API_KEY = os.environ["TAVILY_API_KEY"]

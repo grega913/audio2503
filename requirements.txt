@@ -12,3 +12,4 @@ langgraph
 langchain_groq
 langchain_deepseek
 langchain_openai
+langchain_community

@@ -1,14 +1,23 @@
 from typing import Annotated
 from langchain_groq import ChatGroq
 from langchain_community.tools.tavily_search import TavilySearchResults
-from ..config import TAVILY_API_KEY
 from langchain_core.messages import BaseMessage
 from typing_extensions import TypedDict
 from langgraph.graph import StateGraph
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
 
-from ..config import TAVILY_API_KEY
+import os
+import sys
+from icecream import ic
+
+current_dir = os.path.dirname(__file__)
+app_dir = os.path.dirname(os.path.dirname(current_dir))
+sys.path.insert(0, app_dir)
+
+
+
+from config import TAVILY_API_KEY
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
@@ -26,7 +35,7 @@ class GraphP2:
         self.llm_with_tools = self.llm.bind_tools(self.tools)
 
     def compile(self):
-        """Compile the graph for Part 2"""
+        ic("Compile the graph for Part 2")
         def chatbot(state: State):
             return {"messages": [self.llm_with_tools.invoke(state["messages"])]}
 
@@ -62,6 +71,11 @@ def stream_graph_updates(graph, user_input: str):
 
 if __name__ == "__main__":
     print("Testing GraphP2...")
+    ic(app_dir)
+    ic(sys.path)
+
+
+
 
     # Initialize and compile the graph
     graphP2 = GraphP2()

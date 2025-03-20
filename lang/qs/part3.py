@@ -1,18 +1,17 @@
 from typing import Annotated
 from langchain_groq import ChatGroq
 from langchain_community.tools.tavily_search import TavilySearchResults
-
 from langchain_core.messages import BaseMessage
 from typing_extensions import TypedDict
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import StateGraph
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
+import time
 
 import os
 import sys
 from icecream import ic
-
 
 current_dir = os.path.dirname(__file__)
 app_dir = os.path.dirname(os.path.dirname(current_dir))
@@ -38,7 +37,8 @@ class GraphP3:
         self.llm_with_tools = self.llm.bind_tools(self.tools)
 
     def compile(self):
-        print("Compile the graph for Part 3")
+
+        ic("Compile the graph for Part 3")
         def chatbot(state: State):
             return {"messages": [self.llm_with_tools.invoke(state["messages"])]}
 
@@ -67,18 +67,29 @@ class GraphP3:
         return self.graph
 
 
-def stream_graph_updates(graph, user_input: str):
+
+
+
+def stream_graph_updates(graph, user_input: str, config):
+
     """Stream updates from the graph"""
-    for event in graph.stream({"messages": [{"role": "user", "content": user_input}]}):
+    """The config is the **second positional argument** to stream() or invoke()!"""
+    for event in graph.stream(
+        {"messages": [{"role": "user", "content": user_input}]},
+        config=config, 
+        stream_mode = "values"):
+
+        ic(event)
+
+        '''
         for value in event.values():
-            print("Assistant:", value["messages"][-1].content)
+            print("Assistant:", value["messages"][-1].content)'
+        '''
 
 if __name__ == "__main__":
-    print("Testing GraphP3...")
-    ic(app_dir)
-    ic(sys.path)
+    ic("Testing GraphP3...")
 
-
+    config = {"configurable": {"thread_id": "1"}} # this is for letting th
 
 
     # Initialize and compile the graph
@@ -87,4 +98,21 @@ if __name__ == "__main__":
     graph = graphP3.get_compiled_graph()
 
     # Test with a sample query
-    stream_graph_updates(graph=graph, user_input="What's the latest news about AI?")
+    stream_graph_updates(
+        graph=graph,
+        user_input="My name is Ivan, I am 56 years old, born in Italy. Do not use tools.",
+        config=config)
+    
+    time.sleep(2)
+
+
+    stream_graph_updates(
+        graph=graph,
+        user_input="What is my name? How old am I, where was I born? do not use tools.",
+        config=config)
+    
+    time.sleep(2)
+    
+
+
+

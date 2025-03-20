@@ -2,6 +2,10 @@ console.log("Sanity in lang.js")
 
 // Reusable function to handle form submission
 async function handleLangFormSubmit(event, item_id) {
+
+    console.log("handleLangFormSubmit")
+    console.log(item_id)
+
   // Prevent the default form submission behavior
   event.preventDefault();
 

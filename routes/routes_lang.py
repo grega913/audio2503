@@ -85,7 +85,7 @@ async def stream_graph_results(item_id: str, data:dict):
         elif item_id == "2":
             graph = lang_router.state.graphP2.get_compiled_graph()
         elif item_id == "3":
-            graph = lang_router.state.graphP2.get_compiled_graph()
+            graph = lang_router.state.graphP3.get_compiled_graph()
         else:
             raise ValueError(f"Invalid graph number: {item_id}")
 
@@ -93,17 +93,23 @@ async def stream_graph_results(item_id: str, data:dict):
             try:
                 if item_id == "3":
                     config = {"configurable": {"thread_id": "1"}}
-                    for event in graph.stream(
+                    events= graph.stream(
                         {"messages": [{"role": "user", "content": user_input}]},
                         config=config,
                         stream_mode="values"
-                    ):
-                        for value in event.values():
-                            content = value["messages"][-1].content
-                            yield json.dumps({"content": content}) + "\n"
+                        )
+                    for event in events:
+                        ic(event)
+                        last_message = event["messages"][-1]
+                        ic(last_message)
+
+                        content = event["messages"][-1].content
+                        yield json.dumps({"content": content}) + "\n"
+
                 else:
                     for event in graph.stream({"messages": [{"role": "user", "content": user_input}]}):
                         for value in event.values():
+                            ic(value)
                             content = value["messages"][-1].content
                             yield json.dumps({"content": content}) + "\n"
             except Exception as e:
