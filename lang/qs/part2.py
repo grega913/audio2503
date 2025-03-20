@@ -49,3 +49,21 @@ class GraphP2:
         if not self.compiled:
             raise ValueError("Graph not compiled yet")
         return self.graph
+
+
+def stream_graph_updates(graph, user_input: str):
+    """Stream updates from the graph"""
+    for event in graph.stream({"messages": [{"role": "user", "content": user_input}]}):
+        for value in event.values():
+            print("Assistant:", value["messages"][-1].content)
+
+if __name__ == "__main__":
+    print("Testing GraphP2...")
+
+    # Initialize and compile the graph
+    graphP2 = GraphP2()
+    graphP2.compile()
+    graph = graphP2.get_compiled_graph()
+
+    # Test with a sample query
+    stream_graph_updates(graph=graph, user_input="What's the latest news about AI?")
