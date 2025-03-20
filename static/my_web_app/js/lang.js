@@ -1,6 +1,9 @@
+console.log("Sanity in lang.js")
+
+
 // Get the form element
 const form = document.getElementById("myForm");
-const textAreaEl = document.getElementById("text-area");
+
 
 form.addEventListener("submit", async (event) => {
   // Prevent the default form submission behavior
@@ -18,18 +21,30 @@ form.addEventListener("submit", async (event) => {
 
   // Check if the response was successful
   if (response.ok) {
-    const messagesArea = document.getElementById("messages-area");
+    const messagesArea = document.getElementById("messages");
     messagesArea.innerHTML = ""; // Clear previous content
     
     const reader = response.body.getReader();
     let chunk = null;
     while ((chunk = await reader.read())) {
+        
       if (!chunk.done) {
         const chunkData = new TextDecoder("utf-8").decode(chunk.value);
-        // Create new paragraph for each chunk and append to messages area
-        const p = document.createElement("p");
-        p.textContent = chunkData;
-        messagesArea.appendChild(p);
+
+        console.log(chunkData)
+        const li = document.createElement("li");
+
+        try {
+            const json = JSON.parse(chunkData);
+            const contentText = json.content;
+            li.textContent = contentText
+
+        } catch (error) {
+            console.error('Error parsing JSON:', error);
+            li.textContent=error
+        }
+        messagesArea.appendChild(li);
+        
       } else {
         break; // Stop reading when the response is exhausted
       }
