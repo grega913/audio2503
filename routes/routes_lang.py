@@ -64,6 +64,7 @@ async def lang(request: Request, item_id: str):
 # region Routes for Lang
 @lang_router.post("/api/lang/{item_id}")
 async def stream_graph_results(item_id: str, data:dict):
+    ic(item_id)
     user_input = data["user_input"]
     try:
         await compile_graph_once(lang_router)
