@@ -4,6 +4,7 @@ from langchain_community.tools.tavily_search import TavilySearchResults
 
 from langchain_core.messages import BaseMessage
 from typing_extensions import TypedDict
+from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import StateGraph
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
@@ -54,8 +55,9 @@ class GraphP3:
         self.graph_builder.add_edge("tools", "chatbot")
         self.graph_builder.set_entry_point("chatbot")
 
-        # Compile the graph
-        self.graph = self.graph_builder.compile()
+        # Add memory and compile the graph
+        memory = MemorySaver()
+        self.graph = self.graph_builder.compile(checkpointer=memory)
         self.compiled = True
 
     def get_compiled_graph(self):
