@@ -11,7 +11,8 @@ import json
 
 templates = Jinja2Templates(directory="static/templates")
 
-from lang.qs.part1 import  GraphP1
+from lang.qs.part1 import GraphP1
+from lang.qs.part2 import GraphP2
 
 
 # we need state object in APIRouter because of initializing some lon running operations for the first time we'll be in the route
@@ -25,6 +26,7 @@ lang_router = RouterWithState()
 # Initialize state at the router level
 lang_router.state.lang_initialized = False
 lang_router.state.graphP1 = GraphP1()
+lang_router.state.graphP2 = GraphP2()
 
 
 async def compile_graph_once(router, graph_number: int = 1):
@@ -32,11 +34,9 @@ async def compile_graph_once(router, graph_number: int = 1):
     if graph_number == 1:
         if not router.state.graphP1.compiled:
             router.state.graphP1.compile()
-    # Add more graph initialization here as needed
-    # Example for graph 2:
-    # elif graph_number == 2:
-    #     if not router.state.graphP2.compiled:
-    #         router.state.graphP2.compile()
+    elif graph_number == 2:
+        if not router.state.graphP2.compiled:
+            router.state.graphP2.compile()
 
 
 async def long_running_lang_operation():
@@ -75,7 +75,12 @@ async def stream_graph_results(item_id: str, data:dict):
     user_input = data["user_input"]
     try:
         await compile_graph_once(lang_router, int(item_id))
-        graph = lang_router.state.graphP1.get_compiled_graph()
+        if item_id == "1":
+            graph = lang_router.state.graphP1.get_compiled_graph()
+        elif item_id == "2":
+            graph = lang_router.state.graphP2.get_compiled_graph()
+        else:
+            raise ValueError(f"Invalid graph number: {item_id}")
 
         async def generate_stream():
             try:
