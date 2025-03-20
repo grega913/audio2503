@@ -18,17 +18,22 @@ form.addEventListener("submit", async (event) => {
 
   // Check if the response was successful
   if (response.ok) {
+    const messagesArea = document.getElementById("messages-area");
+    messagesArea.innerHTML = ""; // Clear previous content
+    
     const reader = response.body.getReader();
     let chunk = null;
-        while ((chunk = await reader.read())) {
-        if (!chunk.done) {
-            const chunkData = new TextDecoder("utf-8").decode(chunk.value);
-            console.log(chunkData); // Log each chunk of data
-        } else {
-            break; // Stop reading when the response is exhausted
-        }
-        }
-     
+    while ((chunk = await reader.read())) {
+      if (!chunk.done) {
+        const chunkData = new TextDecoder("utf-8").decode(chunk.value);
+        // Create new paragraph for each chunk and append to messages area
+        const p = document.createElement("p");
+        p.textContent = chunkData;
+        messagesArea.appendChild(p);
+      } else {
+        break; // Stop reading when the response is exhausted
+      }
+    }
   } else {
     // Display an error message
     alert("Error receiving name");
