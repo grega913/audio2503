@@ -1,6 +1,7 @@
 from typing import Annotated
 from langchain_groq import ChatGroq
 from langchain_community.tools.tavily_search import TavilySearchResults
+from config import TAVILY_API_KEY
 from langchain_core.messages import BaseMessage
 from typing_extensions import TypedDict
 from langgraph.graph import StateGraph
@@ -19,7 +20,7 @@ class GraphP2:
         self.graph_builder = StateGraph(State)
         
         # Initialize tools and LLM
-        self.tool = TavilySearchResults(max_results=2)
+        self.tool = TavilySearchResults(max_results=2, api_key=TAVILY_API_KEY)
         self.tools = [self.tool]
         self.llm = ChatGroq(model='llama-3.3-70b-versatile')
         self.llm_with_tools = self.llm.bind_tools(self.tools)
