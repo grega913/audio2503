@@ -24,12 +24,12 @@ lang_router = RouterWithState()
 
 # Initialize state at the router level
 lang_router.state.lang_initialized = False
-lang_router.state.graph_instance = GraphP1()
+lang_router.state.graphP1 = GraphP1()
 
 
 async def compile_graph_once(router):
-    if not router.state.graph_instance.compiled:
-        router.state.graph_instance.compile()
+    if not router.state.graphP1.compiled:
+        router.state.graphP1.compile()
 
 
 async def long_running_lang_operation():
@@ -67,7 +67,7 @@ async def stream_graph_results(data:dict):
     user_input = data["user_input"]
     try:
         await compile_graph_once(lang_router)
-        graph = lang_router.state.graph_instance.get_compiled_graph()
+        graph = lang_router.state.graphP1.get_compiled_graph()
 
         async def generate_stream():
             try:
