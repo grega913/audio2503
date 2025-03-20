@@ -91,12 +91,21 @@ async def stream_graph_results(item_id: str, data:dict):
 
         async def generate_stream():
             try:
-                for event in graph.stream({"messages": [{"role": "user", "content": user_input}]}):
-                    for value in event.values():
-                        #ic(value)
-                        content = value["messages"][-1].content
-                        #ic("Assistant:", content)
-                        yield json.dumps({"content": content}) + "\n"  # Yield each content as JSON
+                if item_id == "3":
+                    config = {"configurable": {"thread_id": "1"}}
+                    for event in graph.stream(
+                        {"messages": [{"role": "user", "content": user_input}]},
+                        config=config,
+                        stream_mode="values"
+                    ):
+                        for value in event.values():
+                            content = value["messages"][-1].content
+                            yield json.dumps({"content": content}) + "\n"
+                else:
+                    for event in graph.stream({"messages": [{"role": "user", "content": user_input}]}):
+                        for value in event.values():
+                            content = value["messages"][-1].content
+                            yield json.dumps({"content": content}) + "\n"
             except Exception as e:
                 yield json.dumps({"error": str(e)}) + "\n"
 
