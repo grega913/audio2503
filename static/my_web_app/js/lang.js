@@ -12,14 +12,9 @@ form.addEventListener("submit", async (event) => {
   // Get the name input value
   const myTxt = document.getElementById("myName").value;
 
-  // Get the current URL path and extract item_id
+  // Get the current URL path and extract item_id, default to "1" if not found
   const pathSegments = window.location.pathname.split('/');
-  const item_id = pathSegments[pathSegments.length - 1];
-  
-  if (!item_id) {
-    alert("Invalid URL - missing item_id");
-    return;
-  }
+  const item_id = pathSegments[pathSegments.length - 1] || "1";
 
   // Make a POST request to the dynamic /api/lang/{item_id} route
   const response = await fetch(`/api/lang/${item_id}`, {
