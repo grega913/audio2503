@@ -1,20 +1,12 @@
 console.log("Sanity in lang.js")
 
-
-// Get the form element
-const form = document.getElementById("myForm");
-
-
-form.addEventListener("submit", async (event) => {
+// Reusable function to handle form submission
+async function handleLangFormSubmit(event, item_id) {
   // Prevent the default form submission behavior
   event.preventDefault();
 
   // Get the name input value
   const myTxt = document.getElementById("myName").value;
-
-  // Get the current URL path and extract item_id, default to "1" if not found
-  const pathSegments = window.location.pathname.split('/');
-  const item_id = pathSegments[pathSegments.length - 1] || "1";
 
   // Make a POST request to the dynamic /api/lang/{item_id} route
   const response = await fetch(`/api/lang/${item_id}`, {
@@ -31,7 +23,6 @@ form.addEventListener("submit", async (event) => {
     const reader = response.body.getReader();
     let chunk = null;
     while ((chunk = await reader.read())) {
-        
       if (!chunk.done) {
         const chunkData = new TextDecoder("utf-8").decode(chunk.value);
 
@@ -42,13 +33,11 @@ form.addEventListener("submit", async (event) => {
             const json = JSON.parse(chunkData);
             const contentText = json.content;
             li.textContent = contentText
-
         } catch (error) {
             console.error('Error parsing JSON:', error);
             li.textContent=error
         }
         messagesArea.appendChild(li);
-        
       } else {
         break; // Stop reading when the response is exhausted
       }
@@ -57,5 +46,14 @@ form.addEventListener("submit", async (event) => {
     // Display an error message
     alert("Error receiving name");
   }
+}
 
-});
+// Get the form element and set up event listener
+const form = document.getElementById("myForm");
+if (form) {
+  form.addEventListener("submit", async (event) => {
+    // Get item_id from form data attribute or default to "1"
+    const item_id = form.dataset.itemId || "1";
+    await handleLangFormSubmit(event, item_id);
+  });
+}
