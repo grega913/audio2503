@@ -27,9 +27,16 @@ lang_router.state.lang_initialized = False
 lang_router.state.graphP1 = GraphP1()
 
 
-async def compile_graph_once(router):
-    if not router.state.graphP1.compiled:
-        router.state.graphP1.compile()
+async def compile_graph_once(router, graph_number: int = 1):
+    """Compile the specified graph if not already compiled"""
+    if graph_number == 1:
+        if not router.state.graphP1.compiled:
+            router.state.graphP1.compile()
+    # Add more graph initialization here as needed
+    # Example for graph 2:
+    # elif graph_number == 2:
+    #     if not router.state.graphP2.compiled:
+    #         router.state.graphP2.compile()
 
 
 async def long_running_lang_operation():
@@ -67,7 +74,7 @@ async def stream_graph_results(item_id: str, data:dict):
     ic(item_id)
     user_input = data["user_input"]
     try:
-        await compile_graph_once(lang_router)
+        await compile_graph_once(lang_router, int(item_id))
         graph = lang_router.state.graphP1.get_compiled_graph()
 
         async def generate_stream():
