@@ -1,5 +1,5 @@
 from typing import Annotated
-from langchain_anthropic import ChatAnthropic
+from langchain_groq import ChatGroq
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.messages import BaseMessage
 from typing_extensions import TypedDict
@@ -19,7 +19,7 @@ class GraphP2:
         # Initialize tools and LLM
         self.tool = TavilySearchResults(max_results=2)
         self.tools = [self.tool]
-        self.llm = ChatAnthropic(model="claude-3-5-sonnet-20240620")
+        self.llm = ChatGroq(model='llama-3.3-70b-versatile')
         self.llm_with_tools = self.llm.bind_tools(self.tools)
 
     def compile(self):
