@@ -7,6 +7,8 @@ from langgraph.graph import StateGraph
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
 
+from config import TAVILY_API_KEY
+
 class State(TypedDict):
     messages: Annotated[list, add_messages]
 
