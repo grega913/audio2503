@@ -11,7 +11,7 @@ import json
 
 templates = Jinja2Templates(directory="static/templates")
 
-from lang.qs.part1 import GraphPart1, GraphP1
+from lang.qs.part1 import  GraphP1
 
 
 # we need state object in APIRouter because of initializing some lon running operations for the first time we'll be in the route
@@ -75,6 +75,7 @@ async def stream_graph_results(data:dict):
                     for value in event.values():
                         content = value["messages"][-1].content
                         ic("Assistant:", content)
+                       
                         yield json.dumps({"content": content}) + "\n"  # Yield each content as JSON
             except Exception as e:
                 yield json.dumps({"error": str(e)}) + "\n"
