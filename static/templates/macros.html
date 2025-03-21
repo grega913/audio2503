@@ -1,3 +1,69 @@
+{% macro navbar_public() %}
+<div class="navbar">
+    <img class="logo-img" src="{{ url_for('static', path='images/default_logo.png') }}" />
+    <span class="hamburger">&#9776;</span> <!-- Hamburger Icon -->
+    <div class="navbar-right" id="navbarRight">
+        <span class="closebtn">&times;</span>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('stripe123') }}">Stripe</a>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('test_websocket') }}">Websockets</a>
+        <!-- Dropdown for News -->
+        <div class="dropdown is-hoverable">
+            <div class="dropdown-trigger">
+                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu1">
+                    <span>Audio</span>
+                    <span class="icon is-small">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu1" role="menu">
+                <div class="dropdown-content">
+                    <a href="/a1" class="dropdown-item"> A1</a>
+                    <a href="/about" class="dropdown-item"> About </a>
+                    <hr class="dropdown-divider" />
+                    <a href="/lang/3" class="dropdown-item"> Lang - 3 </a>
+                </div>
+            </div>
+        </div>
+        <a href="#contact">Contact</a>
+        <a href="{{ url_for('login') }}">Login</a>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro navbar_private() %}
+<div class="navbar">
+    <img class="logo-img" src="{{ url_for('static', path='images/default_logo.png') }}" />
+    <span class="hamburger">&#9776;</span> <!-- Hamburger Icon -->
+    <div class="navbar-right" id="navbarRight">
+        <span class="closebtn">&times;</span>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <!-- Lang Dropdown -->
+        <div class="dropdown is-hoverable">
+            <div class="dropdown-trigger">
+                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu1">
+                    <span>LangGraph</span>
+                    <span class="icon is-small">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu1" role="menu">
+                <div class="dropdown-content">
+                    <a href="/lang/1" class="dropdown-item"> Lang - 1 </a>
+                    <a href="/lang/2" class="dropdown-item"> Lang - 2 </a>
+                    <hr class="dropdown-divider" />
+                    <a href="/lang/3" class="dropdown-item"> Lang - 3 </a>
+                </div>
+            </div>
+        </div>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</div>
+{% endmacro %}
+
 {% macro display_session_data(session_data) %}
 <div id="session-data-container">
     

@@ -2,7 +2,7 @@
 
 {% block title %} Dash {% endblock %}
 
-{% block navbar %} {% include 'basic/navbar_private.html' %} {% endblock %}
+{% block navbar %} {{ navbar_private() }} {% endblock %}
 
 {% block content %}
     {% from "macros.html" import display_session_data %}
