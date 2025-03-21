@@ -64,6 +64,15 @@ async function handleLangFormSubmit(event, item_id) {
         break; // Stop reading when the response is exhausted
       }
     }
+    // Clear and focus the input field after successful response
+    const inputField = document.getElementById("myName");
+    if (inputField) {
+      inputField.value = "";
+      inputField.focus();
+      // Reset textarea height
+      inputField.style.height = "auto";
+      inputField.style.overflowY = "hidden";
+    }
   } else {
     // Display an error message
     alert("Error receiving name");
