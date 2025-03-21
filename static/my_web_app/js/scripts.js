@@ -23,6 +23,8 @@ document.querySelector('.closebtn').addEventListener('click', function() {
 
 // Toggles the dropdown menu with click
 
+
+/*
 const dropBtn = document.getElementById('dropBtn');
 if (dropBtn) { // Check if the element actually exists
     const dropdownContent = document.querySelector('.dropdown-content');
@@ -37,11 +39,7 @@ if (dropBtn) { // Check if the element actually exists
         console.log(dropdownContent);
     });
     
-    /*
-       dropBtn.addEventListener('click', function() {
-        dropdownContent.classList.toggle('show');
-    });
-    */
-}
 
+}
+*/
 

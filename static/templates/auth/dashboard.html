@@ -2,12 +2,14 @@
 
 {% block title %} Dash {% endblock %}
 
-{% from "macros.html" import navbar_private %}
-{% block navbar %} {{ navbar_private() }} {% endblock %}
+
+<!-- This is a comment -->
+
+{% block navbar %}{% include 'basic/navbar_private.html' %}{% endblock %}
+
 
 {% block content %}
     {% from "macros.html" import display_session_data %}
-
 
     
     <h2>Dashboard (Protected Page)</h2>

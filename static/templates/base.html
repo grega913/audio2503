@@ -20,15 +20,14 @@
 
 <body>
 
-    {% from "macros.html" import navbar_public %}
-    {% block navbar %} {{ navbar_public() }} {% endblock %}
+    {% block navbar %}{% include 'basic/navbar_public.html' %}{% endblock %}
+
+        
+
     
     <main>
         
-        {% block content %}
-        <div><p>Content here</p></div>
-        {% endblock %}
-
+        {% block content %}<p>MainContenthere</p>{% endblock %}
        
         
     </main>

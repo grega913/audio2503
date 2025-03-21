@@ -1,0 +1,1 @@
+1. Sessions. Working ok on a route, but should be able to have access to SessionData from within the route, so that we can use conditions for displaying html code in templates as being passed from router functions.

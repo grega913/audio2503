@@ -5,10 +5,13 @@
 - **Stripe** - payments
 - **Bulma** - css
 
-## TODOs
+## 20250321
 
 - **routes/routes_lang.py** - route @lang_router.post("/api/lang/{item_id}") should also acccept another parameter (str) which will be needed
-  for graphs with memory (constructing config object). Maybe we should split the function on 2 functions - for one where we need a user, the SessionData will be dependend.
+  for graphs with memory (constructing config object). Maybe we should split the function on 2 functions - for one where we need a user, the SessionData will be dependend. Solved.
+
+- **Session issues** - currently there's a problem - if we are using Session Data the way we are in "/dashboard", we do not have access to any templates . .
+  Should be fixed
 
 ## 20250320
 

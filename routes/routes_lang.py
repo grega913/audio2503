@@ -15,6 +15,7 @@ from lang.qs.part1 import GraphP1
 from lang.qs.part2 import GraphP2
 from lang.qs.part3 import GraphP3
 
+from helperz import cookie, backend, verifier, SessionData, ModelName, Item
 
 # we need state object in APIRouter because of initializing some lon running operations for the first time we'll be in the route
 class RouterWithState(APIRouter):
@@ -73,18 +74,37 @@ async def lang(request: Request, item_id: str):
     context = {"request": request, "item_id": item_id}
     return templates.TemplateResponse("lang/lang.html", context)
 
+
+
 # region Routes for Lang
-@lang_router.post("/api/lang/{item_id}")
-async def stream_graph_results(item_id: str, data:dict):
-    ic(item_id)
+
+
+
+'''this is route for Part 3 - where we need to have config element'
+    We are checking the SessionData, extraqcing usr from that object and using it as thread_id so that each user can have its own memory
+    Users should obviously be looged, have an active session
+    Some
+'''
+
+@lang_router.post("/api/lang_protected/{item_id}", dependencies=[Depends(cookie)])
+async def stream_graph_results(item_id: str, data:dict, session_data: SessionData = Depends(verifier)):
+    ic('${item_id} in stream_graph_results')
+
     user_input = data["user_input"]
     try:
         await compile_graph_once(lang_router, int(item_id))
-        if item_id == "1":
-            graph = lang_router.state.graphP1.get_compiled_graph()
-        elif item_id == "2":
-            graph = lang_router.state.graphP2.get_compiled_graph()
-        elif item_id == "3":
+
+        # Handle session requirement for item_id 3
+        if item_id == "3":
+            if not session_data:
+                raise HTTPException(status_code=401, detail="Session required for item_id 3")
+
+            config = {"configurable": {"thread_id": session_data.usr }}
+        else:
+            config = None
+
+
+        if item_id == "3":
             graph = lang_router.state.graphP3.get_compiled_graph()
         else:
             raise ValueError(f"Invalid graph number: {item_id}")
@@ -92,7 +112,8 @@ async def stream_graph_results(item_id: str, data:dict):
         async def generate_stream():
             try:
                 if item_id == "3": # since we are using memory here, we should be streaming with config object
-                    config = {"configurable": {"thread_id": "1"}}
+                    #config = {"configurable": {"thread_id": "1"}}
+                    ic (config)
                     events= graph.stream(
                         {"messages": [{"role": "user", "content": user_input}]},
                         config=config,
@@ -122,6 +143,39 @@ async def stream_graph_results(item_id: str, data:dict):
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
+
+# open route, working for item_id == 1 or item_id == 2
+@lang_router.post("/api/lang_private/{item_id}")
+async def stream_graph_public(item_id: str, data: dict):
+    """Public route for item_id 1 and 2"""
+    ic(f'{item_id} in stream_graph_public')
+    user_input = data["user_input"]
+    try:
+        await compile_graph_once(lang_router, int(item_id))
+
+        if item_id == "1":
+            graph = lang_router.state.graphP1.get_compiled_graph()
+        elif item_id == "2":
+            graph = lang_router.state.graphP2.get_compiled_graph()
+        else:
+            raise ValueError(f"Invalid graph number: {item_id}")
+
+        async def generate_stream():
+            try:
+                for event in graph.stream({"messages": [{"role": "user", "content": user_input}]}):
+                    for value in event.values():
+                        ic(value)
+                        content = value["messages"][-1].content
+                        yield json.dumps({"content": content}) + "\n"
+            except Exception as e:
+                yield json.dumps({"error": str(e)}) + "\n"
+
+        return StreamingResponse(generate_stream(), media_type="text/event-stream")
+
+    except ValueError as ve:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
 

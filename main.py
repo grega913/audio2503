@@ -13,8 +13,8 @@ from icecream import ic
 import os
 import firebase_admin
 from firebase_admin import credentials, firestore
-
-
+from helperz import SessionData, verifier, cookie
+from typing import Optional
 
 # endregion
 
@@ -90,6 +90,12 @@ async def root():
     return {"message": "Hello World"}
 
 
+@app.get("/base", response_class=HTMLResponse)
+async def base(request: Request):
+    return templates.TemplateResponse(request=request, name="base.html")
+
+
+
 @app.get("/favicon.ico", include_in_schema=False)
 async def favicon():
     return FileResponse("static/favicon.ico")
@@ -102,13 +108,11 @@ async def predict(x: float):
 
 
 @app.get("/items/{item_id}")
-async def read_item(item_id: int):
+async def read_item(item_id: int, request: Request):
     return {"item_id": item_id}
 
-# base route  - for testing base html tempplate - all others templates extend this one
-@app.get("/base", response_class=HTMLResponse)
-async def home(request: Request):
-    return templates.TemplateResponse(request=request, name="base.html")
+
+
 
 
 
@@ -126,6 +130,9 @@ async def read_itemz(request: Request, item_id: str):
     """
     context = {"request": request, "item_id": item_id}
     return templates.TemplateResponse("item.html", context)
+
+
+
 
 
 

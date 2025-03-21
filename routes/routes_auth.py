@@ -1,12 +1,7 @@
 from datetime import datetime
-from fastapi import APIRouter
-from fastapi import FastAPI, Request, WebSocket, Depends, APIRouter, HTTPException, Body, status, Response, Path
+from fastapi import  Request, Depends, APIRouter, HTTPException, Body, status, Response, Path
 from fastapi.responses import HTMLResponse, JSONResponse, FileResponse, RedirectResponse
-from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-import os
-import stripe
-
 from icecream import ic
 from uuid import UUID, uuid4
 import firebase_admin

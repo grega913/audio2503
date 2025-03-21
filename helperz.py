@@ -30,7 +30,7 @@ cookie_params = CookieParameters(
 cookie = SessionCookie(
     cookie_name="session_id",
     identifier="general_verifier",
-    auto_error=True,
+    auto_error=False,
     secret_key="erguierngieorgnioergnoerigneriognerouignerognerig",  # Change this to a strong secret in production
     cookie_params=cookie_params,
 )

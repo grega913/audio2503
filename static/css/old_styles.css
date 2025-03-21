@@ -1,0 +1,63 @@
+/* Style the dropdown button */
+
+
+.dropdown {
+    position: relative;
+    /* This makes the positioning of the dropdown content relative to this container */
+    display: inline-block;
+}
+
+.dropdown .dropbtn {
+    cursor: pointer;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    margin-top: 1.5rem;
+    right: 0;
+    left: auto;
+    white-space: nowrap;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 1rem 1rem;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    /* Ensure text is aligned to the left */
+}
+
+
+/* Show the dropdown content on hover and when focused */
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content {
+    display: block;
+}
+
+/* Keep dropdown visible when interacting with it */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    margin-top: 1.5rem;
+    right: 0;
+    left: auto;
+    white-space: nowrap;
+    min-width: 160px;
+    /* Add minimum width */
+}
+
+/* Add focus styles for dropdown items */
+.dropdown-content a:focus {
+    background-color: #ddd;
+    outline: none;
+}
