@@ -67,10 +67,22 @@ async function handleLangFormSubmit(event, item_id) {
   }
 }
 
-// Handle textarea input and Enter key
+// Handle form submission and text input
 document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById("myForm");
     const messageInput = document.getElementById('myName');
+    
+    if (form) {
+        // Handle form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const item_id = form.dataset.itemId || "1";
+            handleLangFormSubmit(e, item_id);
+        });
+    }
+
     if (messageInput) {
+        // Handle textarea resizing
         messageInput.addEventListener('input', function() {
             // Only resize if we actually need to wrap
             if (this.scrollHeight > 40) {
@@ -80,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
+        // Handle Enter key press
         messageInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
