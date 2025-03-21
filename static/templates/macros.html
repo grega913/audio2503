@@ -1,12 +1,28 @@
 {% macro display_session_data(session_data) %}
 <div id="session-data-container">
     
-    <div class="session-data">
-        <h4>Session Data</h4>
-        <ul>
-            <li> usr: {{ session_data.usr }} </li>
-            <li> created: {{ session_data.created_at.strftime('%Y-%m-%d %H:%M:%S') }} </li>
-        </ul>
+    <div class="session-data box">
+        <h4 class="title is-4">Session Data</h4>
+        <div class="content">
+            <ul class="is-size-5">
+                <li class="notification is-primary is-light">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <span>User: {{ session_data.usr }}</span>
+                    </span>
+                </li>
+                <li class="notification is-info is-light">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-clock"></i>
+                        </span>
+                        <span>Created: {{ session_data.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+                    </span>
+                </li>
+            </ul>
+        </div>
     </div>
 
 </div>
