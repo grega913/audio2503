@@ -1,0 +1,85 @@
+<div class="section bg-custom-light">
+    <h1>Part 4 - Human-in-the-Loop</h1>
+    <p>
+        This is Part 4 of tutorial from
+        <a href="https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-4-human-in-the-loop">
+            Adding human-in-the-loop functionality
+        </a>
+        <p>
+            This version adds the ability to request human assistance during the conversation.
+        </p>
+    </p>
+
+    <img src="{{ url_for('static', path='images/graph_part4.jpeg') }}" />
+
+    <div class="notification is-info">
+        <p>Try asking something like: "I need expert guidance on building AI agents. Can you request human assistance for me?"</p>
+    </div>
+    
+    <div class="chat-container" style="max-height: 60vh; overflow-y: auto; margin-bottom: 1rem;">
+        <ul id='messages'></ul>
+    </div>
+
+    <form class="form" id="myForm" data-item-id="4" data-messages-area="messages">
+        <div class="field">
+            <div class="control">
+                <input class="input" type="text" id="myName" name="name" placeholder="Enter your message">
+            </div>
+        </div>
+        <div class="field">
+            <button class="button is-primary" type="submit">Send</button>
+        </div>
+    </form>
+
+    <div id="human-assist-section" class="is-hidden">
+        <div class="notification is-warning">
+            <p>Human assistance requested. Please provide your expert input:</p>
+        </div>
+        <form id="humanAssistForm">
+            <div class="field">
+                <div class="control">
+                    <textarea class="textarea" id="humanResponse" placeholder="Enter your expert response"></textarea>
+                </div>
+            </div>
+            <div class="field">
+                <button class="button is-info" type="submit">Submit Expert Response</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const humanAssistSection = document.getElementById('human-assist-section');
+    const humanAssistForm = document.getElementById('humanAssistForm');
+    
+    // Listen for human assistance requests from server
+    const eventSource = new EventSource('/api/lang_protected/4');
+    eventSource.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        
+        if (data.content && data.content.includes('Requesting human assistance')) {
+            humanAssistSection.classList.remove('is-hidden');
+        }
+    };
+
+    // Handle human response submission
+    humanAssistForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const response = document.getElementById('humanResponse').value;
+        
+        fetch('/api/lang_protected/4', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                human_response: response
+            })
+        }).then(() => {
+            humanAssistSection.classList.add('is-hidden');
+            document.getElementById('humanResponse').value = '';
+        });
+    });
+});
+</script>
