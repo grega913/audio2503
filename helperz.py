@@ -13,8 +13,11 @@ from icecream import ic
 
 
 
+from datetime import datetime
+
 class SessionData(BaseModel):
     usr: str
+    created_at: datetime = datetime.now()
 
 cookie_params = CookieParameters(
     secure=False,  # Set to True in production with HTTPS

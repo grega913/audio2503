@@ -7,8 +7,11 @@
 {% block content %}
     {% from "macros.html" import display_session_data %}
 
-    <h1>Dashboard (Protected Page)</h1>
-    <p>This is a protected page that requires authenication to view.</p>
+    <h1>Welcome {{ session_data.usr }}!</h1>
+    <p>Session created: {{ session_data.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+    
+    <h2>Dashboard (Protected Page)</h2>
+    <p>This is a protected page that requires authentication to view.</p>
     <p>Use this template to create and customize more protected pages for your app.</p>
 
     {{ display_session_data(session_data=session_data) }}

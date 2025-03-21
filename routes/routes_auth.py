@@ -76,7 +76,7 @@ async def create_session(name: str, response: Response):
     
 
     session = uuid4()
-    data = SessionData(usr=name)
+    data = SessionData(usr=name, created_at=datetime.now())
 
     await backend.create(session, data)
     cookie.attach_to_response(response, session)
@@ -86,7 +86,10 @@ async def create_session(name: str, response: Response):
 
 @auth_router.get("/whoami", dependencies=[Depends(cookie)])
 async def whoami(session_data: SessionData = Depends(verifier)):
-    return session_data
+    return {
+        "username": session_data.usr,
+        "session_created": session_data.created_at.isoformat()
+    }
 
 
 @auth_router.post("/delete_session")
