@@ -22,7 +22,8 @@ async function handleLangFormSubmit(event, item_id) {
   // Check if the response was successful
   if (response.ok) {
     // Get messages area from form data attribute or default to "messages"
-    const messagesAreaId = form.dataset.messagesArea || "messages";
+    const form = document.getElementById("myForm");
+    const messagesAreaId = form ? form.dataset.messagesArea : "messages";
     const messagesArea = document.getElementById(messagesAreaId);
     messagesArea.innerHTML = ""; // Clear previous content
     
