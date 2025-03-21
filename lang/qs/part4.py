@@ -39,25 +39,54 @@ class GraphP4:
         self.llm_with_tools = self.llm.bind_tools(self.tools)
 
     def compile(self):
-
         ic("Compile the graph for Part 4")
-        def chatbot(state: State):
-            return {"messages": [self.llm_with_tools.invoke(state["messages"])]}
+        
+        from typing import Annotated
+        from langchain_core.tools import tool
+        from langgraph.checkpoint.memory import MemorySaver
+        from langgraph.graph.message import add_messages
+        from langgraph.prebuilt import ToolNode, tools_condition
+        from langgraph.types import Command, interrupt
 
-        # Add nodes
+        class State(TypedDict):
+            messages: Annotated[list, add_messages]
+
+        self.graph_builder = StateGraph(State)
+
+        @tool
+        def human_assistance(query: str) -> str:
+            """Request assistance from a human."""
+            human_response = interrupt({"query": query})
+            return human_response["data"]
+
+        self.tools.append(human_assistance)
+        llm_with_tools = self.llm.bind_tools(self.tools)
+
+        def chatbot(state: State):
+            message = llm_with_tools.invoke(state["messages"])
+            # Because we will be interrupting during tool execution,
+            # we disable parallel tool calling to avoid repeating any
+            # tool invocations when we resume.
+            assert len(message.tool_calls) <= 1
+            return {"messages": [message]}
+
+        # Define nodes
         self.graph_builder.add_node("chatbot", chatbot)
-        tool_node = ToolNode(tools=[self.tool])
+        tool_node = ToolNode(tools=self.tools)
         self.graph_builder.add_node("tools", tool_node)
 
-        # Add edges
+        # Define edges
         self.graph_builder.add_conditional_edges(
             "chatbot",
             tools_condition,
         )
         self.graph_builder.add_edge("tools", "chatbot")
-        self.graph_builder.set_entry_point("chatbot")
+        self.graph_builder.add_edge(START, "chatbot")
 
-        # Add memory and compile the graph
+        # Set finish point
+        self.graph_builder.set_finish_point("chatbot")
+        
+        # Compile the graph
         memory = MemorySaver()
         self.graph = self.graph_builder.compile(checkpointer=memory)
         self.compiled = True
