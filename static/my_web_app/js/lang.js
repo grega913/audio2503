@@ -33,17 +33,29 @@ async function handleLangFormSubmit(event, item_id) {
         const chunkData = new TextDecoder("utf-8").decode(chunk.value);
 
         console.log(chunkData)
-        const li = document.createElement("li");
-
+        const message = document.createElement("li");
+        const timestamp = new Date().toLocaleTimeString();
+        
         try {
             const json = JSON.parse(chunkData);
             const contentText = json.content;
-            li.textContent = contentText
+            
+            // Create message content with timestamp
+            message.innerHTML = `
+                <div class="message-content">${contentText}</div>
+                <div class="message-timestamp">${timestamp}</div>
+            `;
+            message.classList.add('message');
+            
         } catch (error) {
             console.error('Error parsing JSON:', error);
-            li.textContent=error
+            message.textContent = error;
+            message.classList.add('error');
         }
-        messagesArea.appendChild(li);
+        
+        messagesArea.appendChild(message);
+        // Scroll to bottom of messages
+        messagesArea.scrollTop = messagesArea.scrollHeight;
       } else {
         break; // Stop reading when the response is exhausted
       }
@@ -54,12 +66,24 @@ async function handleLangFormSubmit(event, item_id) {
   }
 }
 
-// Get the form element and set up event listener
-const form = document.getElementById("myForm");
-if (form) {
-  form.addEventListener("submit", async (event) => {
-    // Get item_id from form data attribute or default to "1"
-    const item_id = form.dataset.itemId || "1";
-    await handleLangFormSubmit(event, item_id);
-  });
-}
+// Handle textarea input and Enter key
+document.addEventListener('DOMContentLoaded', function() {
+    const messageInput = document.getElementById('myName');
+    if (messageInput) {
+        messageInput.addEventListener('input', function() {
+            // Only resize if we actually need to wrap
+            if (this.scrollHeight > 40) {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+                this.style.overflowY = this.scrollHeight > 200 ? 'auto' : 'hidden';
+            }
+        });
+
+        messageInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleLangFormSubmit(e, 3);
+            }
+        });
+    }
+});
