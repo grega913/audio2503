@@ -14,6 +14,7 @@ templates = Jinja2Templates(directory="static/templates")
 from lang.qs.part1 import GraphP1
 from lang.qs.part2 import GraphP2
 from lang.qs.part3 import GraphP3
+from lang.qs.part4 import GraphP4
 
 from helperz import cookie, backend, verifier, SessionData, ModelName, Item
 
@@ -30,6 +31,7 @@ lang_router.state.lang_initialized = False
 lang_router.state.graphP1 = GraphP1()
 lang_router.state.graphP2 = GraphP2()
 lang_router.state.graphP3 = GraphP3()
+lang_router.state.graphP4 = GraphP4()
 
 
 async def compile_graph_once(router, graph_number: int = 1):
@@ -43,6 +45,9 @@ async def compile_graph_once(router, graph_number: int = 1):
     elif graph_number == 3:
         if not router.state.graphP3.compiled:
             router.state.graphP3.compile()
+    elif graph_number == 4:
+        if not router.state.graphP4.compiled:
+            router.state.graphP4.compile()
 
 
 async def long_running_lang_operation():
@@ -106,6 +111,8 @@ async def stream_graph_results(item_id: str, data:dict, session_data: SessionDat
 
         if item_id == "3":
             graph = lang_router.state.graphP3.get_compiled_graph()
+        elif item_id == "4":
+            graph = lang_router.state.graphP4.get_compiled_graph()
         else:
             raise ValueError(f"Invalid graph number: {item_id}")
 
@@ -157,6 +164,8 @@ async def stream_graph_public(item_id: str, data: dict):
             graph = lang_router.state.graphP1.get_compiled_graph()
         elif item_id == "2":
             graph = lang_router.state.graphP2.get_compiled_graph()
+        elif item_id == "4":
+            graph = lang_router.state.graphP4.get_compiled_graph()
         else:
             raise ValueError(f"Invalid graph number: {item_id}")
 
