@@ -12,8 +12,11 @@ async function handleLangFormSubmit(event, item_id) {
   // Get the name input value
   const myTxt = document.getElementById("myName").value;
 
-  // Make a POST request to the dynamic /api/lang/{item_id} route
-  const response = await fetch(`/api/lang/${item_id}`, {
+  // Determine the correct endpoint based on item_id
+  const endpoint = item_id === "3" ? `/api/lang_protected/${item_id}` : `/api/lang_private/${item_id}`;
+  
+  // Make a POST request to the correct endpoint
+  const response = await fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ user_input: myTxt }),
