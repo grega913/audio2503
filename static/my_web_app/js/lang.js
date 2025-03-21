@@ -83,7 +83,9 @@ document.addEventListener('DOMContentLoaded', function() {
         messageInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
-                handleLangFormSubmit(e, 3);
+                const form = document.getElementById("myForm");
+                const item_id = form ? form.dataset.itemId : "1";
+                handleLangFormSubmit(e, item_id);
             }
         });
     }
