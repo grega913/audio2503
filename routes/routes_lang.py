@@ -91,7 +91,7 @@ async def stream_graph_results(item_id: str, data:dict):
 
         async def generate_stream():
             try:
-                if item_id == "3":
+                if item_id == "3": # since we are using memory here, we should be streaming with config object
                     config = {"configurable": {"thread_id": "1"}}
                     events= graph.stream(
                         {"messages": [{"role": "user", "content": user_input}]},
