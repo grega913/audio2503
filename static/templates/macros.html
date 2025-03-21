@@ -2,9 +2,10 @@
 <div id="session-data-container">
     
     <div class="session-data">
-        <h5>Session Data - Usr</h5>
+        <h4>Session Data</h4>
         <ul>
-            <li> {{session_data.usr}} </li>
+            <li> usr: {{ session_data.usr }} </li>
+            <li> created: {{ session_data.created_at.strftime('%Y-%m-%d %H:%M:%S') }} </li>
         </ul>
     </div>
 
