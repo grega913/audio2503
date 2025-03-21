@@ -144,9 +144,30 @@ main {
 }
 
 
-/* Show the dropdown content on hover */
-.dropdown:hover .dropdown-content {
+/* Show the dropdown content on hover and when focused */
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content {
     display: block;
+}
+
+/* Keep dropdown visible when interacting with it */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    margin-top: 1.5rem;
+    right: 0;
+    left: auto;
+    white-space: nowrap;
+    min-width: 160px; /* Add minimum width */
+}
+
+/* Add focus styles for dropdown items */
+.dropdown-content a:focus {
+    background-color: #ddd;
+    outline: none;
 }
 
 

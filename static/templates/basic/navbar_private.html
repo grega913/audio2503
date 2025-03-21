@@ -6,12 +6,13 @@
         <a href="{{ url_for('dashboard') }}">Dashboard</a>
         
         <!-- Lang Dropdown -->
-        <div class="dropdown is-active">
+        <div class="dropdown">
             <div class="dropdown-trigger">
                 <button class="button is-primary is-outlined" 
                         aria-haspopup="true" 
                         aria-controls="lang-menu"
-                        style="min-width: 120px;">
+                        style="min-width: 120px;"
+                        tabindex="0">
                     <span class="icon-text">
                         <span class="icon">
                             <i class="fas fa-code"></i>
@@ -35,11 +36,11 @@
         <a href="#contact">News</a>
         <a href="/login">Login</a>
         <div class="dropdown">
-            <a class="dropbtn" id="dropBtn">Account</a>
+            <button class="dropbtn" id="dropBtn" tabindex="0">Account</button>
             <div class="dropdown-content">
-                <a href="#news1">Profile</a>
-                <a href="#news2">Settings</a>
-                <a id="sign-out-btn" href="{{ url_for('logout') }}">Logout</a>
+                <a href="#news1" tabindex="0">Profile</a>
+                <a href="#news2" tabindex="0">Settings</a>
+                <a id="sign-out-btn" href="{{ url_for('logout') }}" tabindex="0">Logout</a>
             </div>
         </div>
     </div>
