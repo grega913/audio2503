@@ -9,15 +9,9 @@ from fastapi import HTTPException
 from enum import Enum
 from icecream import ic
 
-#endregionfrom fastapi_sessions.backends.implementations import InMemoryBackend
-from fastapi_sessions.session_verifier import SessionVerifier
-from fastapi_sessions.frontends.implementations import SessionCookie, CookieParameters
-from uuid import UUID, uuid4
-from pydantic import BaseModel
-from fastapi import HTTPException
+#endregion
 
 
-# region Session
 
 class SessionData(BaseModel):
     usr: str

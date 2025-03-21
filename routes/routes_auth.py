@@ -72,7 +72,8 @@ async def authorize(request: Request):
 @auth_router.post("/create_session/{name}")
 async def create_session(name: str, response: Response):
 
-    ic("def create_session")
+    ic(f"def create_session: $ {name}")
+    
 
     session = uuid4()
     data = SessionData(usr=name)
