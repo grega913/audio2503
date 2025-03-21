@@ -5,10 +5,15 @@
 - **Stripe** - payments
 - **Bulma** - css
 
+## TODOs
+
+- **routes/routes_lang.py** - route @lang_router.post("/api/lang/{item_id}") should also acccept another parameter (str) which will be needed
+  for graphs with memory (constructing config object). Maybe we should split the function on 2 functions - for one where we need a user, the SessionData will be dependend.
+
 ## 20250320
 
 - **Added Part 2** - Chatbot with Tools
-- **Added Part 3** - Adding Memory To Chatbor
+- **Added Part 3** - Adding Memory To Chatbot - s
 
 ## 20250320 - [Simplest Possible Graph working](https://langchain-ai.github.io/langgraph/tutorials/introduction/)
 

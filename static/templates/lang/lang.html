@@ -1,8 +1,8 @@
 {% extends "base.html" %} 
 
 {% block head %}
-    <linkhref="{{ url_for('static', path='/css/bulma.css') }}" rel="stylesheet"/>
-    <linkhref="{{ url_for('static', path='/css/chat.css' ) }}" rel="stylesheet" />
+    <link href="{{ url_for('static', path='/css/bulma.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='/css/chat.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block title %} Lang {{ item_id }} {% endblock %}
