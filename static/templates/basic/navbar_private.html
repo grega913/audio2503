@@ -4,7 +4,26 @@
     <div class="navbar-right" id="navbarRight">
         <span class="closebtn">&times;</span>
         <a href="{{ url_for('dashboard') }}">Dashboard</a>
-        <!-- Dropdown for News -->
+        
+        <!-- Lang Dropdown -->
+        <div class="dropdown is-hoverable">
+            <div class="dropdown-trigger">
+                <button class="button" aria-haspopup="true" aria-controls="lang-menu">
+                    <span>Lang</span>
+                    <span class="icon is-small">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="dropdown-menu" id="lang-menu" role="menu">
+                <div class="dropdown-content">
+                    <a href="/lang/1" class="dropdown-item">Lang 1</a>
+                    <a href="/lang/2" class="dropdown-item">Lang 2</a>
+                    <a href="/lang/3" class="dropdown-item">Lang 3</a>
+                </div>
+            </div>
+        </div>
+
         <a href="#contact">News</a>
         <a href="/login">Login</a>
         <div class="dropdown">
