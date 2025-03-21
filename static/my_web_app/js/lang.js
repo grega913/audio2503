@@ -25,7 +25,7 @@ async function handleLangFormSubmit(event, item_id) {
     const form = document.getElementById("myForm");
     const messagesAreaId = form ? form.dataset.messagesArea : "messages";
     const messagesArea = document.getElementById(messagesAreaId);
-    messagesArea.innerHTML = ""; // Clear previous content
+    // Don't clear previous content - keep all messages
     
     const reader = response.body.getReader();
     let chunk = null;
