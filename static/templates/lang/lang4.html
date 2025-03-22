@@ -67,8 +67,9 @@ document.addEventListener('DOMContentLoaded', function() {
     humanAssistForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const response = document.getElementById('humanResponse').value;
+        const messagesArea = document.getElementById('messages');
         
-        fetch('/api/lang_protected/4', {
+        fetch('/api/lang_human_assist/4', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,9 +77,31 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify({
                 human_response: response
             })
-        }).then(() => {
-            humanAssistSection.classList.add('is-hidden');
-            document.getElementById('humanResponse').value = '';
+        }).then(async (response) => {
+            if (response.ok) {
+                const reader = response.body.getReader();
+                let chunk = null;
+                while ((chunk = await reader.read())) {
+                    if (!chunk.done) {
+                        const chunkData = new TextDecoder("utf-8").decode(chunk.value);
+                        const json = JSON.parse(chunkData);
+                        const contentText = json.content;
+                        
+                        const message = document.createElement("li");
+                        const timestamp = new Date().toLocaleTimeString();
+                        message.innerHTML = `
+                            <div class="message-content is-size-7">${contentText}</div>
+                            <div class="message-timestamp is-size-7 has-text-right" style="margin-top: 0.25rem;">${timestamp}</div>
+                        `;
+                        message.classList.add("message", "mb-4");
+                        messagesArea.appendChild(message);
+                        messagesArea.scrollTop = messagesArea.scrollHeight;
+                    }
+                }
+                
+                humanAssistSection.classList.add('is-hidden');
+                document.getElementById('humanResponse').value = '';
+            }
         });
     });
 });
