@@ -2,7 +2,7 @@ console.log("Sanity in lang.js");
 
 // Function to handle human assistance form submission
 async function handleHumanAssistFormSubmit(event, item_id) {
-  console.log("handleHumanAssistFormSubmit");
+  console.log(`handleHumanAssistFormSubmits ${item_id}`);
   event.preventDefault();
 
   const humanResponse = document.getElementById("humanResponse").value;
@@ -26,6 +26,9 @@ async function handleHumanAssistFormSubmit(event, item_id) {
       while ((chunk = await reader.read())) {
         if (!chunk.done) {
           const chunkData = new TextDecoder("utf-8").decode(chunk.value);
+
+          console.log(`${chunkData} in handleHumanAssistFormSubmits`);
+
           const json = JSON.parse(chunkData);
           const contentText = json.content;
 
@@ -40,11 +43,13 @@ async function handleHumanAssistFormSubmit(event, item_id) {
           messagesArea.scrollTop = messagesArea.scrollHeight;
         }
       }
-      
+
       // Hide the human assist section and clear the textarea
-      const humanAssistSection = document.getElementById('human-assist-section');
+      const humanAssistSection = document.getElementById(
+        "human-assist-section"
+      );
       if (humanAssistSection) {
-        humanAssistSection.classList.add('is-hidden');
+        humanAssistSection.classList.add("is-hidden");
       }
       document.getElementById("humanResponse").value = "";
     }
@@ -67,7 +72,9 @@ async function handleLangFormSubmit(event, item_id) {
 
   // Determine the correct endpoint based on item_id
   const endpoint =
-    item_id === "3" || item_id === "4" ? `/api/lang_protected/${item_id}` : `/api/lang_private/${item_id}`;
+    item_id === "3" || item_id === "4"
+      ? `/api/lang_protected/${item_id}`
+      : `/api/lang_private/${item_id}`;
 
   // Make a POST request to the correct endpoint
   const response = await fetch(endpoint, {
@@ -82,8 +89,7 @@ async function handleLangFormSubmit(event, item_id) {
     const form = document.getElementById("myForm");
     const messagesAreaId = form ? form.dataset.messagesArea : "messages";
     const messagesArea = document.getElementById(messagesAreaId);
-    const humanAssistSection = document.getElementById('human-assist-section');
-    
+    const humanAssistSection = document.getElementById("human-assist-section");
 
     const reader = response.body.getReader();
     let chunk = null;
@@ -91,7 +97,7 @@ async function handleLangFormSubmit(event, item_id) {
       if (!chunk.done) {
         const chunkData = new TextDecoder("utf-8").decode(chunk.value);
 
-        console.log(chunkData);
+        console.log(`${chunkData} in handleLangFormSubmit`);
         const message = document.createElement("li");
         const timestamp = new Date().toLocaleTimeString();
 
@@ -100,12 +106,10 @@ async function handleLangFormSubmit(event, item_id) {
           const contentText = json.content;
 
           // Check if this is a human assistance request
-         
-            
-            if (humanAssistSection) {
-              humanAssistSection.classList.remove('is-hidden');
-            }
-          
+
+          if (humanAssistSection) {
+            humanAssistSection.classList.remove("is-hidden");
+          }
 
           // Create message content with timestamp
           message.innerHTML = `
@@ -113,7 +117,6 @@ async function handleLangFormSubmit(event, item_id) {
                 <div class="message-timestamp is-size-7 has-text-right" style="margin-top: 0.25rem;">${timestamp}</div>
             `;
           message.classList.add("message", "mb-4");
-
         } catch (error) {
           console.error("Error parsing JSON:", error);
           message.textContent = error;
@@ -188,5 +191,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-
-
