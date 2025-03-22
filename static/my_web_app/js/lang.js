@@ -156,7 +156,11 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       const item_id = form.dataset.itemId || "1";
-      handleLangFormSubmit(e, item_id);
+      if (item_id === "4") {
+        handleLangFormSubmit(e, "4");
+      } else {
+        handleLangFormSubmit(e, item_id);
+      }
     });
   }
 
