@@ -28,7 +28,7 @@ async function handleLangFormSubmit(event, item_id) {
     const form = document.getElementById("myForm");
     const messagesAreaId = form ? form.dataset.messagesArea : "messages";
     const messagesArea = document.getElementById(messagesAreaId);
-    
+    const humanAssistSection = document.getElementById('human-assist-section');
     
 
     const reader = response.body.getReader();
@@ -46,12 +46,12 @@ async function handleLangFormSubmit(event, item_id) {
           const contentText = json.content;
 
           // Check if this is a human assistance request
-          if (contentText.includes("Requesting human assistance")) {
-            const humanAssistSection = document.getElementById('human-assist-section');
+         
+            
             if (humanAssistSection) {
               humanAssistSection.classList.remove('is-hidden');
             }
-          }
+          
 
           // Create message content with timestamp
           message.innerHTML = `
