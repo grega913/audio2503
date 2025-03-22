@@ -13,7 +13,7 @@ async function handleLangFormSubmit(event, item_id) {
 
   // Determine the correct endpoint based on item_id
   const endpoint =
-    item_id === "3" ? `/api/lang_protected/3` : `/api/lang_private/${item_id}`;
+    item_id === "3" ? `/api/lang_protected/${item_id}` : `/api/lang_private/${item_id}`;
 
   // Make a POST request to the correct endpoint
   const response = await fetch(endpoint, {
@@ -115,3 +115,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+
