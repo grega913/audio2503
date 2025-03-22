@@ -362,11 +362,15 @@ footer {
 .chat-container {
     max-height: 60vh;
     overflow-y: auto;
-    margin-bottom: 1rem;
-    padding: 1rem;
+    margin: 2rem 0;
+    padding: 1.5rem;
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form {
+    margin-top: 1.5rem;
 }
 
 /* Responsive */
