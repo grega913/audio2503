@@ -36,6 +36,7 @@ lang_router.state.graphP4 = GraphP4()
 
 async def compile_graph_once(router, graph_number: int = 1):
     """Compile the specified graph if not already compiled"""
+    
     if graph_number == 1:
         if not router.state.graphP1.compiled:
             router.state.graphP1.compile()
@@ -85,75 +86,9 @@ async def lang(request: Request, item_id: str):
 
 
 
-'''this is route for Part 3 - where we need to have config element'
-    We are checking the SessionData, extraqcing usr from that object and using it as thread_id so that each user can have its own memory
-    Users should obviously be looged, have an active session
-    Some
-'''
-
-@lang_router.post("/api/lang_protected/{item_id}", dependencies=[Depends(cookie)])
-async def stream_graph_results(item_id: str, data:dict, session_data: SessionData = Depends(verifier)):
-    ic('${item_id} in stream_graph_results')
-
-    user_input = data["user_input"]
-    try:
-        await compile_graph_once(lang_router, int(item_id))
-
-        # Handle session requirement for item_id 3
-        if item_id == "3":
-            if not session_data:
-                raise HTTPException(status_code=401, detail="Session required for item_id 3")
-
-            config = {"configurable": {"thread_id": session_data.usr }}
-        else:
-            config = None
-
-
-        if item_id == "3":
-            graph = lang_router.state.graphP3.get_compiled_graph()
-        elif item_id == "4":
-            graph = lang_router.state.graphP4.get_compiled_graph()
-        else:
-            raise ValueError(f"Invalid graph number: {item_id}")
-
-        async def generate_stream():
-            try:
-                if item_id == "3": # since we are using memory here, we should be streaming with config object
-                    #config = {"configurable": {"thread_id": "1"}}
-                    ic (config)
-                    events= graph.stream(
-                        {"messages": [{"role": "user", "content": user_input}]},
-                        config=config,
-                        stream_mode="values"
-                        )
-                    for event in events:
-                        ic(event)
-                        last_message = event["messages"][-1]
-                        ic(last_message)
-
-                        content = event["messages"][-1].content
-                        yield json.dumps({"content": content}) + "\n"
-
-                else:
-                    for event in graph.stream({"messages": [{"role": "user", "content": user_input}]}):
-                        for value in event.values():
-                            ic(value)
-                            content = value["messages"][-1].content
-                            yield json.dumps({"content": content}) + "\n"
-            except Exception as e:
-                yield json.dumps({"error": str(e)}) + "\n"
-
-        return StreamingResponse(generate_stream(), media_type="text/event-stream")
-
-    except ValueError as ve:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
-    except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
-
-
 # open route, working for item_id == 1 or item_id == 2
 @lang_router.post("/api/lang_private/{item_id}")
-async def stream_graph_public(item_id: str, data: dict):
+async def stream_graph_results_public(item_id: str, data: dict):
     """Public route for item_id 1 and 2"""
     ic(f'{item_id} in stream_graph_public')
     user_input = data["user_input"]
@@ -176,6 +111,59 @@ async def stream_graph_public(item_id: str, data: dict):
                         ic(value)
                         content = value["messages"][-1].content
                         yield json.dumps({"content": content}) + "\n"
+            except Exception as e:
+                yield json.dumps({"error": str(e)}) + "\n"
+
+        return StreamingResponse(generate_stream(), media_type="text/event-stream")
+
+    except ValueError as ve:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+
+
+@lang_router.post("/api/lang_protected/{item_id}", dependencies=[Depends(cookie)])
+async def stream_graph_results_protected(item_id: str, data:dict, session_data: SessionData = Depends(verifier)):
+    ic('${item_id} in stream_graph_results')
+    user_input = data["user_input"]
+    try:
+        await compile_graph_once(lang_router, int(item_id))
+        # Handle session requirement for item_id 3 or 4
+        if (item_id == "3" or item_id == "4"):
+            if not session_data:
+                raise HTTPException(status_code=401, detail="Session required for item_id 3")
+            config = {"configurable": {"thread_id": session_data.usr }}
+        else:
+            config = None
+
+        # check if we have graphP3 or graphP4
+        if item_id == "3":
+            graph = lang_router.state.graphP3.get_compiled_graph()
+        elif item_id == "4":
+            graph = lang_router.state.graphP4.get_compiled_graph()
+        else:
+            raise ValueError(f"Invalid graph number: {item_id}")
+
+        async def generate_stream():
+            try:
+                if (item_id == "3" or item_id =="4"): # since we are using memory here, we should be streaming with config object
+                    #config = {"configurable": {"thread_id": "1"}}
+                    ic (config)
+                    events = graph.stream(
+                        {"messages": [{"role": "user", "content": user_input}]},
+                        config=config,
+                        stream_mode="values"
+                        )
+                    for event in events:
+                        ic(event)
+                        last_message = event["messages"][-1]
+                        ic(last_message)
+
+                        content = event["messages"][-1].content
+                        yield json.dumps({"content": content}) + "\n"
+
+
             except Exception as e:
                 yield json.dumps({"error": str(e)}) + "\n"
 
