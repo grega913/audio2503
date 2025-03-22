@@ -31,15 +31,17 @@ async function handleHumanAssistFormSubmit(event, item_id) {
           const json = JSON.parse(chunkData);
           const contentText = json.content;
 
-          const message = document.createElement("li");
-          const timestamp = new Date().toLocaleTimeString();
-          message.innerHTML = `
-            <div class="message-content">${contentText}</div>
-            <div class="message-timestamp">${timestamp}</div>
-          `;
-          message.classList.add("message");
-          messagesArea.appendChild(message);
-          messagesArea.scrollTop = messagesArea.scrollHeight;
+          if (contentText && contentText.trim() !== "") {
+            const message = document.createElement("li");
+            const timestamp = new Date().toLocaleTimeString();
+            message.innerHTML = `
+              <div class="message-content">${contentText}</div>
+              <div class="message-timestamp">${timestamp}</div>
+            `;
+            message.classList.add("message");
+            messagesArea.appendChild(message);
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+          }
         } else {
           break; // Add this line to properly end the stream reading
         }
@@ -107,17 +109,18 @@ async function handleLangFormSubmit(event, item_id) {
           const contentText = json.content;
 
           // Check if this is a human assistance request
-
           if (humanAssistSection) {
             humanAssistSection.classList.remove("is-hidden");
           }
 
-          // Create message content with timestamp
-          message.innerHTML = `
-                <div class="message-content">${contentText}</div>
-                <div class="message-timestamp">${timestamp}</div>
+          // Only create message if content exists
+          if (contentText && contentText.trim() !== "") {
+            message.innerHTML = `
+              <div class="message-content">${contentText}</div>
+              <div class="message-timestamp">${timestamp}</div>
             `;
-          message.classList.add("message");
+            message.classList.add("message");
+          }
         } catch (error) {
           console.error("Error parsing JSON:", error);
           message.textContent = error;
