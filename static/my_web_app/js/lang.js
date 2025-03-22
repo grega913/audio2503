@@ -1,5 +1,59 @@
 console.log("Sanity in lang.js");
 
+// Function to handle human assistance form submission
+async function handleHumanAssistFormSubmit(event, item_id) {
+  console.log("handleHumanAssistFormSubmit");
+  event.preventDefault();
+
+  const humanResponse = document.getElementById("humanResponse").value;
+  const messagesArea = document.getElementById("messages");
+
+  if (!humanResponse) {
+    alert("Please enter an expert response");
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/lang_human_assist/${item_id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ human_response: humanResponse }),
+    });
+
+    if (response.ok) {
+      const reader = response.body.getReader();
+      let chunk = null;
+      while ((chunk = await reader.read())) {
+        if (!chunk.done) {
+          const chunkData = new TextDecoder("utf-8").decode(chunk.value);
+          const json = JSON.parse(chunkData);
+          const contentText = json.content;
+
+          const message = document.createElement("li");
+          const timestamp = new Date().toLocaleTimeString();
+          message.innerHTML = `
+            <div class="message-content is-size-7">${contentText}</div>
+            <div class="message-timestamp is-size-7 has-text-right" style="margin-top: 0.25rem;">${timestamp}</div>
+          `;
+          message.classList.add("message", "mb-4");
+          messagesArea.appendChild(message);
+          messagesArea.scrollTop = messagesArea.scrollHeight;
+        }
+      }
+      
+      // Hide the human assist section and clear the textarea
+      const humanAssistSection = document.getElementById('human-assist-section');
+      if (humanAssistSection) {
+        humanAssistSection.classList.add('is-hidden');
+      }
+      document.getElementById("humanResponse").value = "";
+    }
+  } catch (error) {
+    console.error("Error submitting human response:", error);
+    alert("Error submitting expert response");
+  }
+}
+
 // Reusable function to handle form submission
 async function handleLangFormSubmit(event, item_id) {
   console.log("handleLangFormSubmit");
@@ -92,6 +146,7 @@ async function handleLangFormSubmit(event, item_id) {
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("myForm");
   const messageInput = document.getElementById("myName");
+  const humanAssistForm = document.getElementById("humanAssistForm");
 
   if (form) {
     // Handle form submission
@@ -99,6 +154,15 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
       const item_id = form.dataset.itemId || "1";
       handleLangFormSubmit(e, item_id);
+    });
+  }
+
+  if (humanAssistForm) {
+    // Handle human assistance form submission
+    humanAssistForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const item_id = document.getElementById("myForm").dataset.itemId || "4";
+      handleHumanAssistFormSubmit(e, item_id);
     });
   }
 
