@@ -45,6 +45,14 @@ async function handleLangFormSubmit(event, item_id) {
           const json = JSON.parse(chunkData);
           const contentText = json.content;
 
+          // Check if this is a human assistance request
+          if (contentText.includes("Requesting human assistance")) {
+            const humanAssistSection = document.getElementById('human-assist-section');
+            if (humanAssistSection) {
+              humanAssistSection.classList.remove('is-hidden');
+            }
+          }
+
           // Create message content with timestamp
           message.innerHTML = `
                 <div class="message-content is-size-7">${contentText}</div>
