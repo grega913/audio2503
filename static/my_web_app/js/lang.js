@@ -26,7 +26,6 @@ async function handleHumanAssistFormSubmit(event, item_id) {
       while ((chunk = await reader.read())) {
         if (!chunk.done) {
           const chunkData = new TextDecoder("utf-8").decode(chunk.value);
-
           console.log(`${chunkData} in handleHumanAssistFormSubmits`);
 
           const json = JSON.parse(chunkData);
@@ -41,6 +40,8 @@ async function handleHumanAssistFormSubmit(event, item_id) {
           message.classList.add("message", "mb-4");
           messagesArea.appendChild(message);
           messagesArea.scrollTop = messagesArea.scrollHeight;
+        } else {
+          break; // Add this line to properly end the stream reading
         }
       }
 
