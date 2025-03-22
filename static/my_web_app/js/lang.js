@@ -34,10 +34,10 @@ async function handleHumanAssistFormSubmit(event, item_id) {
           const message = document.createElement("li");
           const timestamp = new Date().toLocaleTimeString();
           message.innerHTML = `
-            <div class="message-content is-size-7">${contentText}</div>
-            <div class="message-timestamp is-size-7 has-text-right" style="margin-top: 0.25rem;">${timestamp}</div>
+            <div class="message-content">${contentText}</div>
+            <div class="message-timestamp">${timestamp}</div>
           `;
-          message.classList.add("message", "mb-4");
+          message.classList.add("message");
           messagesArea.appendChild(message);
           messagesArea.scrollTop = messagesArea.scrollHeight;
         } else {
@@ -114,10 +114,10 @@ async function handleLangFormSubmit(event, item_id) {
 
           // Create message content with timestamp
           message.innerHTML = `
-                <div class="message-content is-size-7">${contentText}</div>
-                <div class="message-timestamp is-size-7 has-text-right" style="margin-top: 0.25rem;">${timestamp}</div>
+                <div class="message-content">${contentText}</div>
+                <div class="message-timestamp">${timestamp}</div>
             `;
-          message.classList.add("message", "mb-4");
+          message.classList.add("message");
         } catch (error) {
           console.error("Error parsing JSON:", error);
           message.textContent = error;
