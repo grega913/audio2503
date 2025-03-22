@@ -9,6 +9,7 @@ from pydantic import BaseModel
 import time
 from typing import List, Dict, Any
 import json
+from langgraph.types import Command, interrupt
 
 templates = Jinja2Templates(directory="static/templates")
 
@@ -190,6 +191,8 @@ async def stream_human_assist(item_id: str, data: dict, session_data: SessionDat
             
         # Get human response from request
         human_response = data.get("human_response")
+        ic(human_response)
+        
         if not human_response:
             raise ValueError("No human response provided")
 
@@ -208,7 +211,7 @@ async def stream_human_assist(item_id: str, data: dict, session_data: SessionDat
         async def generate_stream():
             try:
                 # Create human command with response
-                human_command = {"messages": [HumanMessage(content=human_response)]}
+                human_command = Command(resume={"data": human_response})
                 
                 # Stream the human response through the graph
                 events = graph.stream(

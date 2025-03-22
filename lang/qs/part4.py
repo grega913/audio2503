@@ -6,9 +6,11 @@ from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.messages import BaseMessage
 from typing_extensions import TypedDict
 from langgraph.checkpoint.memory import MemorySaver
-from langgraph.graph import StateGraph
+from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
+from langgraph.types import Command, interrupt
+
 import time
 
 import os
@@ -112,38 +114,66 @@ def stream_graph_updates(graph, user_input: str, config):
 
         ic(event)
 
-        '''
-        for value in event.values():
-            print("Assistant:", value["messages"][-1].content)'
-        '''
 
 if __name__ == "__main__":
     ic("Testing GraphP4...")
 
-    config = {"configurable": {"thread_id": "1"}} # this is for letting th
-
 
     # Initialize and compile the graph
-    graphP3 = GraphP4()
-    graphP3.compile()
-    graph = graphP3.get_compiled_graph()
-
-    # Test with a sample query
-    stream_graph_updates(
-        graph=graph,
-        user_input="My name is Ivan, I am 56 years old, born in Italy. Do not use tools.",
-        config=config)
-    
-    time.sleep(2)
+    graphP4 = GraphP4()
+    graphP4.compile()
+    graph = graphP4.get_compiled_graph()
 
 
-    stream_graph_updates(
-        graph=graph,
-        user_input="What is my name? How old am I, where was I born? do not use tools.",
-        config=config)
+    ic("#" * 50)
+
+    user_input = "I need some expert guidance for building an AI agent. Could you request assistance for me?"
+    config = {"configurable": {"thread_id": "1"}}
+
+    events = graph.stream(
+        {"messages": [{"role": "user", "content": user_input}]},
+        config,
+        stream_mode="values",
+    )
+    for event in events:
+        if "messages" in event:
+            ic(event["messages"][-1])
     
-    time.sleep(2)
+    ic("*" * 50)
+
+
+    time.sleep(5)
     
+    snapshot = graph.get_state(config)
+    ic(snapshot)
+    ic(snapshot.next)
+
+    ic("*" * 50)
+    time.sleep(5)
+    ic("now we are commanding with human_response")
+    ic("*" * 50)
+    ic("*" * 50)
+
+
+
+    human_response = (
+        "We, the experts are here to help! We'd recommend you check out LangGraph to build your agent."
+        " It's much more reliable and extensible than simple autonomous agents."
+    )
+    human_command = Command(resume={"data": human_response})
+
+
+    events = graph.stream(human_command, config, stream_mode="values")
+    for event in events:
+        if "messages" in event:
+            ic(event["messages"][-1])
+            content = event["messages"][-1].content
+
+            ic(content)
+
+
+
+
 
 
 

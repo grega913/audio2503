@@ -5,10 +5,16 @@
 - **Stripe** - payments
 - **Bulma** - css
 
-## 20250321
+## 20250322
 
-- **routes/routes_lang.py** - route @lang_router.post("/api/lang/{item_id}") should also acccept another parameter (str) which will be needed
-  for graphs with memory (constructing config object). Maybe we should split the function on 2 functions - for one where we need a user, the SessionData will be dependend. Solved.
+-**Added Part 4 - Human in the loop**
+Relevant Files and functions:
+
+- /api/lang_human_assist/{item_id} - taking care of streaming graph with human command
+- lang/part4.py - check basic implementation
+- currently this is just a simple example - the logic for when the form for human to interact to be displayed should be defined, currently it displays every time
+
+## 20250321
 
 - **Session issues** - currently there's a problem - if we are using Session Data the way we are in "/dashboard", we do not have access to any templates . .
   Should be fixed
