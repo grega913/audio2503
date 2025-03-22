@@ -48,6 +48,21 @@ body {
     flex: 1;
     overflow: auto;
     padding: 2rem;
+    min-height: calc(100vh - 120px); /* Adjust based on footer height */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+footer {
+    flex-shrink: 0;
+    background-color: var(--grey-color);
+    color: white;
+    padding: 1rem 0;
+    margin-top: auto;
 }
 
 
