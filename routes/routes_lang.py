@@ -1,4 +1,5 @@
 from fastapi import Request, Depends, APIRouter, HTTPException, Body, status, Response, Path,FastAPI, Form
+from langchain_core.messages import HumanMessage
 from fastapi.responses import HTMLResponse, JSONResponse, FileResponse, RedirectResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 import asyncio
@@ -176,5 +177,60 @@ async def stream_graph_results_protected(item_id: str, data:dict, session_data: 
 
 
 
+
+@lang_router.post("/api/lang_human_assist/{item_id}", dependencies=[Depends(cookie)])
+async def stream_human_assist(item_id: str, data: dict, session_data: SessionData = Depends(verifier)):
+    ic(f'{item_id} in stream_human_assist')
+    try:
+        # Validate item_id and session
+        if item_id not in ["3", "4"]:
+            raise ValueError("Human assistance only available for item_id 3 or 4")
+        if not session_data:
+            raise HTTPException(status_code=401, detail="Session required for human assistance")
+            
+        # Get human response from request
+        human_response = data.get("human_response")
+        if not human_response:
+            raise ValueError("No human response provided")
+
+        # Compile graph if needed
+        await compile_graph_once(lang_router, int(item_id))
+        
+        # Get appropriate graph
+        if item_id == "3":
+            graph = lang_router.state.graphP3.get_compiled_graph()
+        else:
+            graph = lang_router.state.graphP4.get_compiled_graph()
+
+        # Create config with thread_id from session
+        config = {"configurable": {"thread_id": session_data.usr}}
+
+        async def generate_stream():
+            try:
+                # Create human command with response
+                human_command = {"messages": [HumanMessage(content=human_response)]}
+                
+                # Stream the human response through the graph
+                events = graph.stream(
+                    human_command,
+                    config=config,
+                    stream_mode="values"
+                )
+                
+                for event in events:
+                    if "messages" in event:
+                        ic(event["messages"][-1])
+                        content = event["messages"][-1].content
+                        yield json.dumps({"content": content}) + "\n"
+                        
+            except Exception as e:
+                yield json.dumps({"error": str(e)}) + "\n"
+
+        return StreamingResponse(generate_stream(), media_type="text/event-stream")
+
+    except ValueError as ve:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 # endregion
