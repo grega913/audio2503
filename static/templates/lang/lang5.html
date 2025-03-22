@@ -1,0 +1,64 @@
+<div class="section bg-custom-light">
+    <h1>Part 5 - Human Verification</h1>
+    <p>
+        This is Part 5 of tutorial from
+        <a href="https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-5-adding-human-verification">
+            Adding human verification functionality
+        </a>
+        <p>
+            This version adds the ability to verify information with a human during the conversation.
+        </p>
+    </p>
+
+    <img src="{{ url_for('static', path='images/graph5.jpeg') }}" />
+
+    <div class="notification is-info">
+        <p>Try asking something like: "My name is John and my birthday is 1990-01-01. Is this correct?"</p>
+    </div>
+    
+    <div class="chat-container">
+        <ul id='messages'></ul>
+    </div>
+
+    <form class="form" id="myForm" data-item-id="5" data-messages-area="messages" method="POST">
+        <div class="field">
+            <div class="control">
+                <input class="input" type="text" id="myName" name="name" placeholder="Type your message here...">
+            </div>
+        </div>
+        <div class="field">
+            <button class="button is-primary" type="submit">Send</button>
+        </div>
+    </form>
+
+    <div id="human-assist-section" class="is-hidden">
+        <div class="notification is-warning">
+            <p>Human verification requested. Please verify the information:</p>
+            <p>Name: <span id="verify-name"></span></p>
+            <p>Birthday: <span id="verify-birthday"></span></p>
+        </div>
+        <form id="humanAssistForm">
+            <div class="field">
+                <div class="control">
+                    <label class="checkbox">
+                        <input type="checkbox" id="isCorrect">
+                        Is this information correct?
+                    </label>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input" type="text" id="correctName" placeholder="Correct name (if needed)">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input" type="text" id="correctBirthday" placeholder="Correct birthday (if needed)">
+                </div>
+            </div>
+            <div class="field">
+                <button class="button is-info" type="submit">Submit Verification</button>
+            </div>
+        </form>
+    </div>
+</div>

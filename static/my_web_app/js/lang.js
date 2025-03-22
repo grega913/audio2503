@@ -1,11 +1,19 @@
 console.log("Sanity in lang.js");
 
-// Function to handle human assistance form submission
+// Function to handle human verification form submission
 async function handleHumanAssistFormSubmit(event, item_id) {
-  console.log(`handleHumanAssistFormSubmits ${item_id}`);
+  console.log(`handleHumanAssistFormSubmit ${item_id}`);
   event.preventDefault();
 
-  const humanResponse = document.getElementById("humanResponse").value;
+  const isCorrect = document.getElementById("isCorrect").checked;
+  const correctName = document.getElementById("correctName").value;
+  const correctBirthday = document.getElementById("correctBirthday").value;
+  
+  const humanResponse = {
+    correct: isCorrect ? "yes" : "no",
+    name: correctName,
+    birthday: correctBirthday
+  };
   const messagesArea = document.getElementById("messages");
 
   if (!humanResponse) {
@@ -109,8 +117,10 @@ async function handleLangFormSubmit(event, item_id) {
           const contentText = json.content;
 
           // Check if this is a human assistance request
-          if (humanAssistSection) {
+          if (humanAssistSection && json.type === "verification") {
             humanAssistSection.classList.remove("is-hidden");
+            document.getElementById("verify-name").textContent = json.name || "";
+            document.getElementById("verify-birthday").textContent = json.birthday || "";
           }
 
           // Only create message if content exists
