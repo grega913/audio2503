@@ -29,6 +29,7 @@ async function handleLangFormSubmit(event, item_id) {
     const messagesAreaId = form ? form.dataset.messagesArea : "messages";
     const messagesArea = document.getElementById(messagesAreaId);
     
+    
 
     const reader = response.body.getReader();
     let chunk = null;
