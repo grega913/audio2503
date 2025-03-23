@@ -1,5 +1,111 @@
 console.log("Sanity in lang.js");
 
+
+
+// Reusable function to handle form submission //
+
+/*  This is the main form and is called in all 6 parts for the first interaction
+    Basically it makes a post request to the /api/lang/public (if item_id ==1 or2) or /api/lang/protected (if item_id == 3,4,5,6)
+    calls to protected route are for cases, wherwe we need a config, since we need history/memory, based on the logged in user
+
+*/
+async function handleLangFormSubmit(event, item_id) {
+  console.log("handleLangFormSubmit");
+  console.log(item_id);
+
+  // Prevent the default form submission behavior
+  event.preventDefault();
+
+  // Get the name input value
+  const myTxt = document.getElementById("myName").value;
+
+  // Determine the correct endpoint based on item_id
+  const endpoint =
+    item_id === "3" || item_id === "4" || item_id === "5"
+      ? `/api/lang_protected/${item_id}`
+      : `/api/lang_public/${item_id}`;
+
+  // Make a POST request to the correct endpoint
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user_input: myTxt }),
+  });
+
+  // Check if the response was successful
+  if (response.ok) {
+    // Get messages area from form data attribute or default to "messages"
+    const form = document.getElementById("myForm");
+    const messagesAreaId = form ? form.dataset.messagesArea : "messages";
+    const messagesArea = document.getElementById(messagesAreaId);
+    const humanAssistSection = document.getElementById("human-assist-section");
+
+    const reader = response.body.getReader();
+    let chunk = null;
+    while ((chunk = await reader.read())) {
+      if (!chunk.done) {
+        const chunkData = new TextDecoder("utf-8").decode(chunk.value);
+
+        console.log(`${chunkData} in handleLangFormSubmit`);
+
+        /*
+        const message = document.createElement("li");
+        const timestamp = new Date().toLocaleTimeString();
+
+        try {
+          const json = JSON.parse(chunkData);
+
+
+
+          const contentText = json.content;
+
+          // Check if this is a human assistance request
+          if (humanAssistSection && json.type === "verification") {
+            humanAssistSection.classList.remove("is-hidden");
+            document.getElementById("verify-name").textContent = json.name || "";
+            document.getElementById("verify-birthday").textContent = json.birthday || "";
+          }
+
+          // Only create message if content exists
+          if (contentText && contentText.trim() !== "") {
+            message.innerHTML = `
+              <div class="message-content">${contentText}</div>
+              <div class="message-timestamp">${timestamp}</div>
+            `;
+            message.classList.add("message");
+          }
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+          message.textContent = error;
+          message.classList.add("error");
+        }
+
+        messagesArea.appendChild(message);
+        */
+        // Scroll to bottom of messages
+        messagesArea.scrollTop = messagesArea.scrollHeight;
+      } else {
+        break; // Stop reading when the response is exhausted
+      }
+    }
+    // Clear and focus the input field after successful response
+    const inputField = document.getElementById("myName");
+    if (inputField) {
+      inputField.value = "";
+      inputField.focus();
+      // Reset textarea height
+      inputField.style.height = "auto";
+      inputField.style.overflowY = "hidden";
+    }
+  } else {
+    // Display an error message
+    alert("Error receiving name");
+  }
+}
+
+
+
+
 // Function to handle human verification form submission
 async function handleHumanAssistFormSubmit(event, item_id) {
   console.log(`handleHumanAssistFormSubmit ${item_id}`);
@@ -70,94 +176,6 @@ async function handleHumanAssistFormSubmit(event, item_id) {
   }
 }
 
-// Reusable function to handle form submission
-async function handleLangFormSubmit(event, item_id) {
-  console.log("handleLangFormSubmit");
-  console.log(item_id);
-
-  // Prevent the default form submission behavior
-  event.preventDefault();
-
-  // Get the name input value
-  const myTxt = document.getElementById("myName").value;
-
-  // Determine the correct endpoint based on item_id
-  const endpoint =
-    item_id === "3" || item_id === "4"
-      ? `/api/lang_protected/${item_id}`
-      : `/api/lang_private/${item_id}`;
-
-  // Make a POST request to the correct endpoint
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ user_input: myTxt }),
-  });
-
-  // Check if the response was successful
-  if (response.ok) {
-    // Get messages area from form data attribute or default to "messages"
-    const form = document.getElementById("myForm");
-    const messagesAreaId = form ? form.dataset.messagesArea : "messages";
-    const messagesArea = document.getElementById(messagesAreaId);
-    const humanAssistSection = document.getElementById("human-assist-section");
-
-    const reader = response.body.getReader();
-    let chunk = null;
-    while ((chunk = await reader.read())) {
-      if (!chunk.done) {
-        const chunkData = new TextDecoder("utf-8").decode(chunk.value);
-
-        console.log(`${chunkData} in handleLangFormSubmit`);
-        const message = document.createElement("li");
-        const timestamp = new Date().toLocaleTimeString();
-
-        try {
-          const json = JSON.parse(chunkData);
-          const contentText = json.content;
-
-          // Check if this is a human assistance request
-          if (humanAssistSection && json.type === "verification") {
-            humanAssistSection.classList.remove("is-hidden");
-            document.getElementById("verify-name").textContent = json.name || "";
-            document.getElementById("verify-birthday").textContent = json.birthday || "";
-          }
-
-          // Only create message if content exists
-          if (contentText && contentText.trim() !== "") {
-            message.innerHTML = `
-              <div class="message-content">${contentText}</div>
-              <div class="message-timestamp">${timestamp}</div>
-            `;
-            message.classList.add("message");
-          }
-        } catch (error) {
-          console.error("Error parsing JSON:", error);
-          message.textContent = error;
-          message.classList.add("error");
-        }
-
-        messagesArea.appendChild(message);
-        // Scroll to bottom of messages
-        messagesArea.scrollTop = messagesArea.scrollHeight;
-      } else {
-        break; // Stop reading when the response is exhausted
-      }
-    }
-    // Clear and focus the input field after successful response
-    const inputField = document.getElementById("myName");
-    if (inputField) {
-      inputField.value = "";
-      inputField.focus();
-      // Reset textarea height
-      inputField.style.height = "auto";
-      inputField.style.overflowY = "hidden";
-    }
-  } else {
-    // Display an error message
-    alert("Error receiving name");
-  }
-}
 
 // Handle form submission and text input
 document.addEventListener("DOMContentLoaded", function () {

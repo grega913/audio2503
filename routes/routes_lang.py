@@ -10,6 +10,7 @@ import time
 from typing import List, Dict, Any
 import json
 from langgraph.types import Command, interrupt
+from prettyprinter import pprint
 
 templates = Jinja2Templates(directory="static/templates")
 
@@ -17,6 +18,7 @@ from lang.qs.part1 import GraphP1
 from lang.qs.part2 import GraphP2
 from lang.qs.part3 import GraphP3
 from lang.qs.part4 import GraphP4
+from lang.qs.part5 import GraphP5
 
 from helperz import cookie, backend, verifier, SessionData, ModelName, Item
 
@@ -34,6 +36,7 @@ lang_router.state.graphP1 = GraphP1()
 lang_router.state.graphP2 = GraphP2()
 lang_router.state.graphP3 = GraphP3()
 lang_router.state.graphP4 = GraphP4()
+lang_router.state.graphP5 = GraphP5()
 
 
 async def compile_graph_once(router, graph_number: int = 1):
@@ -51,6 +54,9 @@ async def compile_graph_once(router, graph_number: int = 1):
     elif graph_number == 4:
         if not router.state.graphP4.compiled:
             router.state.graphP4.compile()
+    elif graph_number == 5:
+        if not router.state.graphP5.compiled:
+            router.state.graphP5.compile()
 
 
 async def long_running_lang_operation():
@@ -89,7 +95,7 @@ async def lang(request: Request, item_id: str):
 
 
 # open route, working for item_id == 1 or item_id == 2
-@lang_router.post("/api/lang_private/{item_id}")
+@lang_router.post("/api/lang_public/{item_id}")
 async def stream_graph_results_public(item_id: str, data: dict):
     """Public route for item_id 1 and 2"""
     ic(f'{item_id} in stream_graph_public')
@@ -124,18 +130,20 @@ async def stream_graph_results_public(item_id: str, data: dict):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
-
+'''
+this is a reusable function for streaming results on graph
+'''
 @lang_router.post("/api/lang_protected/{item_id}", dependencies=[Depends(cookie)])
 async def stream_graph_results_protected(item_id: str, data:dict, session_data: SessionData = Depends(verifier)):
     ic('${item_id} in stream_graph_results')
     user_input = data["user_input"]
     try:
         await compile_graph_once(lang_router, int(item_id))
-        # Handle session requirement for item_id 3 or 4
-        if (item_id == "3" or item_id == "4"):
+        # Handle session requirement for item_id 3 or 4 or 5
+        if (item_id == "3" or item_id == "4" or item_id == "5"):
             if not session_data:
-                raise HTTPException(status_code=401, detail="Session required for item_id 3")
-            config = {"configurable": {"thread_id": session_data.usr }}
+                raise HTTPException(status_code=401, detail="Session required for item_id 3,4,5,or6")
+            config = {"recursion_limit": 10, "configurable": {"thread_id": session_data.usr }}
         else:
             config = None
 
@@ -144,30 +152,64 @@ async def stream_graph_results_protected(item_id: str, data:dict, session_data: 
             graph = lang_router.state.graphP3.get_compiled_graph()
         elif item_id == "4":
             graph = lang_router.state.graphP4.get_compiled_graph()
+        elif item_id == "5":
+            graph = lang_router.state.graphP5.get_compiled_graph()
         else:
             raise ValueError(f"Invalid graph number: {item_id}")
 
+        ic("before generate stream")
+        ic(config)
+
+        
+
         async def generate_stream():
+            num_events = 0
             try:
-                if (item_id == "3" or item_id =="4"): # since we are using memory here, we should be streaming with config object
-                    #config = {"configurable": {"thread_id": "1"}}
-                    ic (config)
+                if (item_id == "3" or item_id =="4" or item_id =="5"): # since we are using memory here, we should be streaming with config object
                     events = graph.stream(
                         {"messages": [{"role": "user", "content": user_input}]},
                         config=config,
                         stream_mode="values"
                         )
+                    
+                    # simples version for sending last message's content to the client
+                    
                     for event in events:
-                        ic(event)
-                        last_message = event["messages"][-1]
-                        ic(last_message)
+                        if "messages" in event:
+                            last_message = event["messages"][-1]
 
-                        content = event["messages"][-1].content
-                        yield json.dumps({"content": content}) + "\n"
+                            #content = last_message.content
+                            yield json.dumps({"last_message": last_message.content}) + "\n"
+                    
+                    '''
+                    chunk_size = 8
+                    messages = []
+                    for event in events:
+                        num_events+=1
+                        ic(event)
+                        if "messages" in event:
+                            last_message = event["messages"][-1]
+                            ic(last_message)
+                            messages.append(last_message)
+                            if len(messages) >= chunk_size:
+                                yield json.dumps({"messages": messages}) + "\n"
+                                messages = []
+
+                    if messages:
+                        yield json.dumps({"messages": messages}) + "\n"'
+                    '''
+
+
 
 
             except Exception as e:
                 yield json.dumps({"error": str(e)}) + "\n"
+
+            finally:
+                state = graph.get_state(config=config)
+                ic("#" * 50)
+                pprint(state)
+
 
         return StreamingResponse(generate_stream(), media_type="text/event-stream")
 
