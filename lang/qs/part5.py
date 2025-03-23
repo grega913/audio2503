@@ -1,3 +1,5 @@
+# https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-5-customizing-state
+
 from typing import Annotated
 from langchain_groq import ChatGroq  # Using Groq instead of Anthropic
 from langchain_community.tools.tavily_search import TavilySearchResults
@@ -9,10 +11,11 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
 from langgraph.types import Command, interrupt
-
+import time
 import os
 import sys
 from icecream import ic
+from prettyprinter import pprint
 
 current_dir = os.path.dirname(__file__)
 app_dir = os.path.dirname(os.path.dirname(current_dir))
@@ -41,6 +44,10 @@ class GraphP5:
         ic("Compile the graph for Part 5")
 
         @tool
+        # Note that because we are generating a ToolMessage for a state update, we
+        # generally require the ID of the corresponding tool call. We can use
+        # LangChain's InjectedToolCallId to signal that this argument should not
+        # be revealed to the model in the tool's schema.
         def human_assistance(
             name: str,
             birthday: str,
@@ -74,8 +81,11 @@ class GraphP5:
         self.llm_with_tools = self.llm.bind_tools(self.tools)
 
         def chatbot(state: State):
+            ic("chatbot")
+
             message = self.llm_with_tools.invoke(state["messages"])
-            assert len(message.tool_calls) <= 1
+            #ic(message)
+            #assert len(message.tool_calls) <= 1
             return {"messages": [message]}
 
         # Define nodes
@@ -127,19 +137,80 @@ if __name__ == "__main__":
     graph = graphP5.get_compiled_graph()
 
     # Test the graph
-    config = {"configurable": {"thread_id": "1"}}
-    user_input = "My name is John and my birthday is 1990-01-01. Is this correct?"
-    
-    events = graph.stream(
-        {
-            "messages": [{"role": "user", "content": user_input}],
-            "name": "John",
-            "birthday": "1990-01-01"
-        },
-        config,
-        stream_mode="values",
+
+    #config = {"configurable": {"thread_id": "1"}}
+    config = {"recursion_limit": 10, "configurable": {"thread_id": "1" }}
+    '''
+    user_input = (
+        "Can you look up when LangGraph was released? When you have the answer, use the human_assistance tool for review."
+    )
+    '''
+    user_input = (
+        "When and where was Michelangelo born?"
     )
     
+    num_events=0
+    events = graph.stream(
+        {"messages": [{"role": "user", "content": user_input}]},
+        config=config,
+        stream_mode="values",
+    )
+
+    for event in events:
+        num_events+=1
+        ic(num_events)
+        ic("--" * 50)
+        ic(event)
+        if "messages" in event:
+            last_message = event["messages"][-1]
+            ic(last_message)
+
+    state = graph.get_state(config=config)
+    ic("#" * 50)
+    pprint(state)
+
+
+
+
+    '''
+
+    ic("#" * 50)
+    time.sleep(5)
+    snapshot = graph.get_state(config)
+    ic(snapshot)
+    ic(snapshot.next)
+    ic("#" * 50)
+    time.sleep(5)
+    ic("now we are commanding with human_response")
+    ic("#" * 50)
+
+
+    human_command = Command(
+        resume={
+            "name": "LangGraph",
+            "birthday": "Jan 17, 2024",
+            },
+    )
+    events = graph.stream(human_command, config, stream_mode="values")
     for event in events:
         if "messages" in event:
-            ic(event["messages"][-1])
+            event["messages"][-1].pretty_print()
+
+    ic("#" * 50)
+    time.sleep(5)
+
+    ic("last line:")
+    snapshot = graph.get_state(config)
+    ic("snapshot at the end:")
+    ic("#" * 50)
+
+    ic(snapshot)
+    ic("#" * 50)
+    ic(snapshot.values.items())
+    ic("#" * 50)
+
+
+    { k: v for k, v in snapshot.values.items() if k in ("name", "birthday") }
+
+    '''
+

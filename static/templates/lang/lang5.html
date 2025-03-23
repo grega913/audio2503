@@ -1,19 +1,18 @@
 <div class="section bg-custom-light">
-    <h1>Part 5 - Human Verification</h1>
-    <p>
-        This is Part 5 of tutorial from
-        <a href="https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-5-adding-human-verification">
-            Adding human verification functionality
-        </a>
         <p>
-            This version adds the ability to verify information with a human during the conversation.
-        </p>
+        <a href="https://langchain-ai.github.io/langgraph/tutorials/introduction/#part-5-customizing-state">
+            Part 5: Customizing State
+        </a>
+        <ul>
+            <li>Adding additional fields to the State</li>
+            <li>New scenario: Chatbot is is using its search tool to find specific information, and forwarding them to a human for review.</li>
+        </ul>
     </p>
 
     <img src="{{ url_for('static', path='images/graph5.jpeg') }}" />
 
     <div class="notification is-info">
-        <p>Try asking something like: "My name is John and my birthday is 1990-01-01. Is this correct?"</p>
+        <p>Try asking something like: "When and where was Michelangelo born?"</p>
     </div>
     
     <div class="chat-container">
@@ -31,6 +30,8 @@
         </div>
     </form>
 
+
+    <!--This gets displayed in second step . . we need to define the logic for this. Check part5.py and lang.js-->
     <div id="human-assist-section" class="is-hidden">
         <div class="notification is-warning">
             <p>Human verification requested. Please verify the information:</p>

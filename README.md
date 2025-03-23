@@ -5,9 +5,20 @@
 - **Stripe** - payments
 - **Bulma** - css
 
+## 20250323
+
+- **Added Part 5 - Customizing State**
+
+Relevant Files and functions:
+
+- /api/lang_human_assist/{item_id} - taking care of streaming graph with human command
+- lang/part5.py - check basic implementation
+- static_my_web_ap/lang.js - logic for what to do in client (browser) - calling api routes and displaying html element by modifying css styles - is hidden/is not hidden . . .
+
 ## 20250322
 
--**Added Part 4 - Human in the loop**
+- **Added Part 4 - Human in the loop**
+
 Relevant Files and functions:
 
 - /api/lang_human_assist/{item_id} - taking care of streaming graph with human command
@@ -22,7 +33,7 @@ Relevant Files and functions:
 ## 20250320
 
 - **Added Part 2** - Chatbot with Tools
-- **Added Part 3** - Adding Memory To Chatbot - s
+- **Added Part 3** - Adding Memory To Chatbot
 
 ## 20250320 - [Simplest Possible Graph working](https://langchain-ai.github.io/langgraph/tutorials/introduction/)
 

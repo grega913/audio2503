@@ -9,13 +9,22 @@ from fastapi import HTTPException
 from enum import Enum
 from icecream import ic
 from datetime import datetime
+from datetime import datetime
+from langchain_core.messages import BaseMessage, HumanMessage, AIMessage, ToolMessage, SystemMessage
+from typing import Dict, Any
 
 #endregion
 
 
-
-from datetime import datetime
-from langchain_core.messages import BaseMessage, HumanMessage, AIMessage, ToolMessage, SystemMessage
+def create_message_response(last_message: Any) -> Dict[str, Any]:
+    """Create a standardized message response dictionary"""
+    return {
+        "last": [{
+            "content": last_message.content,
+            "type": get_message_type(last_message),
+            "timestamp": datetime.now().isoformat()
+        }]
+    }
 
 def get_message_type(message: BaseMessage) -> str:
     """Returns message type as string for styling purposes"""
