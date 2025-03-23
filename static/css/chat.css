@@ -66,9 +66,24 @@
 /* Message header styling */
 .message-header {
     display: flex;
-    justify-content: space-between;
+    gap: 8px;
     align-items: center;
     margin-bottom: 4px;
+    position: absolute;
+    top: 4px;
+}
+
+/* Human messages - header on left */
+.message-human .message-header {
+    left: 8px;
+    right: auto;
+}
+
+/* AI/Tool messages - header on right */
+.message-ai .message-header,
+.message-tool .message-header {
+    right: 8px;
+    left: auto;
 }
 
 .message-type {
@@ -85,12 +100,19 @@
 .message-content {
     font-size: 0.9rem;
     line-height: 1.4;
+    margin-top: 24px; /* Make space for header */
 }
 
 /* Timestamp styling */
 .message-timestamp {
     font-size: 0.7rem;
     color: #666;
+}
+
+/* Add relative positioning to messages */
+[class^="message-"] {
+    position: relative;
+    padding-top: 28px; /* Add space for header */
 }
 
 /* Animation for new messages */
