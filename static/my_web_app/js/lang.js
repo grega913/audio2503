@@ -3,7 +3,6 @@ console.log("Sanity in lang.js");
 
 
 // Reusable function to handle form submission //
-
 /*  This is the main form and is called in all 6 parts for the first interaction
     Basically it makes a post request to the /api/lang/public (if item_id ==1 or2) or /api/lang/protected (if item_id == 3,4,5,6)
     calls to protected route are for cases, wherwe we need a config, since we need history/memory, based on the logged in user
