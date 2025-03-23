@@ -48,9 +48,9 @@ async function handleLangFormSubmit(event, item_id) {
 
         console.log(`${chunkData} in handleLangFormSubmit`);
 
-        /*
+        
         const message = document.createElement("li");
-        const timestamp = new Date().toLocaleTimeString();
+
 
         try {
           const json = JSON.parse(chunkData);
