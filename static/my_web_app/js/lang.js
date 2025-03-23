@@ -17,7 +17,7 @@ function createMessageElement(json) {
           timestamp
         ).toLocaleTimeString()}</div>
     `;
-  message.classList.add("message", `message-${type}`);
+  message.classList.add(`message-${type}`);
 
   return message;
 }
