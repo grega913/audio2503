@@ -15,6 +15,19 @@ from datetime import datetime
 
 
 from datetime import datetime
+from langchain_core.messages import BaseMessage, HumanMessage, AIMessage, ToolMessage, SystemMessage
+
+def get_message_type(message: BaseMessage) -> str:
+    """Returns message type as string for styling purposes"""
+    if isinstance(message, HumanMessage):
+        return "human"
+    elif isinstance(message, AIMessage):
+        return "ai" 
+    elif isinstance(message, ToolMessage):
+        return "tool"
+    elif isinstance(message, SystemMessage):
+        return "system"
+    return "unknown"
 
 class SessionData(BaseModel):
     usr: str
