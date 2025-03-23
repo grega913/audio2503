@@ -1,5 +1,23 @@
 console.log("Sanity in lang.js");
 
+function createMessageElement(json) {
+    const lastMessage = json.last?.[0];
+    if (!lastMessage) return null;
+
+    const { content, type, timestamp } = lastMessage;
+    
+    if (!content || content.trim() === "") return null;
+
+    const message = document.createElement("li");
+    message.innerHTML = `
+        <div class="message-content">${content}</div>
+        <div class="message-timestamp">${new Date(timestamp).toLocaleTimeString()}</div>
+    `;
+    message.classList.add("message", `message-${type}`);
+    
+    return message;
+}
+
 
 
 // Reusable function to handle form submission //
