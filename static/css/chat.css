@@ -1,34 +1,74 @@
-/* Message list styling */
-#messages li {
+/* Base message styling */
+#messages {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+}
+
+.message {
     list-style-type: none;
-    padding: 8px 12px;
+    padding: 12px 16px;
     margin: 4px 0;
-    border-radius: 8px;
+    border-radius: 12px;
     max-width: 70%;
     word-wrap: break-word;
     position: relative;
     animation: fadeIn 0.3s ease-in;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
-/* Alternate message background colors */
-#messages li:nth-child(odd) {
+/* Message type specific styling */
+.message-human {
     background-color: #e3f2fd;
     align-self: flex-start;
+    border-bottom-left-radius: 4px;
 }
 
-#messages li:nth-child(even) {
-    background-color: #f5f5f5;
+.message-ai {
+    background-color: #f0f4ff;
     align-self: flex-end;
+    border-bottom-right-radius: 4px;
 }
 
-/* Message timestamp styling */
-#messages li::after {
-    content: attr(data-timestamp);
-    display: block;
+.message-tool {
+    background-color: #fff3e0;
+    align-self: center;
+    border-radius: 20px;
+    max-width: 90%;
+}
+
+.message-system {
+    background-color: #f5f5f5;
+    align-self: center;
+    border-radius: 20px;
+    max-width: 90%;
+    font-style: italic;
+    color: #666;
+}
+
+.message-unknown {
+    background-color: #f8d7da;
+    align-self: center;
+    border-radius: 20px;
+    max-width: 90%;
+}
+
+/* Message content styling */
+.message-content {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Timestamp styling */
+.message-timestamp {
     font-size: 0.75rem;
     color: #666;
-    margin-top: 4px;
     text-align: right;
+    margin-top: 4px;
+    align-self: flex-end;
 }
 
 /* Animation for new messages */
