@@ -143,8 +143,10 @@ async function handleHumanAssistFormSubmit(event, item_id) {
           console.log(`${chunkData} in handleHumanAssistFormSubmits`);
 
           const json = JSON.parse(chunkData);
-          const contentText = json.last_message;
-          const messageType = json.message_type || 'unknown';
+          const messages = json.messages || [];
+          const lastMessage = messages[messages.length - 1];
+          const contentText = lastMessage?.content || '';
+          const messageType = lastMessage?.type || 'unknown';
 
           if (contentText && contentText.trim() !== "") {
             const message = document.createElement("li");

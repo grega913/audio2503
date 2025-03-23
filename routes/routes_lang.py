@@ -179,8 +179,11 @@ async def stream_graph_results_protected(item_id: str, data:dict, session_data: 
                             last_message = event["messages"][-1]
 
                             yield json.dumps({
-                                "last_message": last_message.content,
-                                "message_type": get_message_type(last_message)
+                                "messages": [{
+                                    "content": last_message.content,
+                                    "type": get_message_type(last_message),
+                                    "timestamp": datetime.now().isoformat()
+                                }]
                             }) + "\n"
                     
                     '''
