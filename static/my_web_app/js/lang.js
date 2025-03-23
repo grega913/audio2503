@@ -1,24 +1,26 @@
 console.log("Sanity in lang.js");
 
 function createMessageElement(json) {
-    const lastMessage = json.last?.[0];
-    if (!lastMessage) return null;
+  console.log(`createMessageElement with json: ${json}`);
 
-    const { content, type, timestamp } = lastMessage;
-    
-    if (!content || content.trim() === "") return null;
+  const lastMessage = json.last?.[0];
+  if (!lastMessage) return null;
 
-    const message = document.createElement("li");
-    message.innerHTML = `
+  const { content, type, timestamp } = lastMessage;
+
+  if (!content || content.trim() === "") return null;
+
+  const message = document.createElement("li");
+  message.innerHTML = `
         <div class="message-content">${content}</div>
-        <div class="message-timestamp">${new Date(timestamp).toLocaleTimeString()}</div>
+        <div class="message-timestamp">${new Date(
+          timestamp
+        ).toLocaleTimeString()}</div>
     `;
-    message.classList.add("message", `message-${type}`);
-    
-    return message;
+  message.classList.add("message", `message-${type}`);
+
+  return message;
 }
-
-
 
 // Reusable function to handle form submission //
 /*  This is the main form and is called in all 6 parts for the first interaction
@@ -68,33 +70,16 @@ async function handleLangFormSubmit(event, item_id) {
         try {
           const json = JSON.parse(chunkData);
           const message = createMessageElement(json);
-          
+
           if (message) {
             messagesArea.appendChild(message);
-            
-            // Check if this is a human assistance request
-            if (humanAssistSection && json.last?.[0]?.type === "verification") {
-              humanAssistSection.classList.remove("is-hidden");
-              document.getElementById("verify-name").textContent = json.name || "";
-              document.getElementById("verify-birthday").textContent = json.birthday || "";
-            }
           }
-
-
-
-
-
-
-                        
-
         } catch (error) {
           console.error("Error parsing JSON:", error);
           message.textContent = error;
           message.classList.add("error");
         }
 
-        messagesArea.appendChild(message);
-        
         // Scroll to bottom of messages
         messagesArea.scrollTop = messagesArea.scrollHeight;
       } else {
@@ -116,9 +101,6 @@ async function handleLangFormSubmit(event, item_id) {
   }
 }
 
-
-
-
 // Function to handle human verification form submission
 async function handleHumanAssistFormSubmit(event, item_id) {
   console.log(`handleHumanAssistFormSubmit ${item_id}`);
@@ -127,11 +109,11 @@ async function handleHumanAssistFormSubmit(event, item_id) {
   const isCorrect = document.getElementById("isCorrect").checked;
   const correctName = document.getElementById("correctName").value;
   const correctBirthday = document.getElementById("correctBirthday").value;
-  
+
   const humanResponse = {
     correct: isCorrect ? "yes" : "no",
     name: correctName,
-    birthday: correctBirthday
+    birthday: correctBirthday,
   };
   const messagesArea = document.getElementById("messages");
 
@@ -157,7 +139,7 @@ async function handleHumanAssistFormSubmit(event, item_id) {
 
           const json = JSON.parse(chunkData);
           const message = createMessageElement(json);
-          
+
           if (message) {
             messagesArea.appendChild(message);
             messagesArea.scrollTop = messagesArea.scrollHeight;
@@ -181,7 +163,6 @@ async function handleHumanAssistFormSubmit(event, item_id) {
     alert("Error submitting expert response");
   }
 }
-
 
 // Handle form submission and text input
 document.addEventListener("DOMContentLoaded", function () {

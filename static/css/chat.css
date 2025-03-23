@@ -28,13 +28,13 @@
 }
 
 .message-ai {
-    background-color: #f0f4ff;
+    background-color: #092a83;
     align-self: flex-end;
     border-bottom-right-radius: 4px;
 }
 
 .message-tool {
-    background-color: #fff3e0;
+    background-color: #37669c;
     align-self: center;
     border-radius: 20px;
     max-width: 90%;
