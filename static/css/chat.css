@@ -64,21 +64,42 @@
     max-width: 90%;
 }
 
-/* Message styling */
-[class^="message-"] div:first-child {
+/* Message header container */
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+/* Human message header alignment */
+.message-human .message-header {
+    justify-content: flex-start;
+}
+
+/* AI/Tool message header alignment */
+.message-ai .message-header,
+.message-tool .message-header {
+    justify-content: flex-end;
+}
+
+/* Message type styling */
+.message-type {
     font-size: 0.7rem;
     font-weight: bold;
     text-transform: uppercase;
     color: #666;
+    margin-right: 8px;
 }
 
-[class^="message-"] div:nth-child(2) {
+/* Timestamp styling */
+.message-timestamp {
     font-size: 0.7rem;
     color: #666;
-    text-align: right;
 }
 
-[class^="message-"] div:last-child {
+/* Message content styling */
+.message-content {
     font-size: 0.9rem;
     line-height: 1.4;
     margin-top: 4px;
