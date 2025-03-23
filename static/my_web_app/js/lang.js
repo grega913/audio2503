@@ -49,17 +49,18 @@ async function handleLangFormSubmit(event, item_id) {
 
         try {
           const json = JSON.parse(chunkData);
-
+          const message = createMessageElement(json);
           
-          const messageType = json.last[0].type;
-          const messageContent = json.last[0].content;
-          const messageTimestamp = json.last[0].timestamp  
-
-
-          console.log(messageType)
-          console.log(messageContent)
-          console.log(messageTimestamp)
-          console.log(" - - - - - - - - - ")
+          if (message) {
+            messagesArea.appendChild(message);
+            
+            // Check if this is a human assistance request
+            if (humanAssistSection && json.last?.[0]?.type === "verification") {
+              humanAssistSection.classList.remove("is-hidden");
+              document.getElementById("verify-name").textContent = json.name || "";
+              document.getElementById("verify-birthday").textContent = json.birthday || "";
+            }
+          }
 
 
 
