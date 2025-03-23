@@ -71,6 +71,9 @@
     margin-bottom: 4px;
     position: absolute;
     top: 4px;
+    white-space: nowrap; /* Prevent wrapping */
+    max-width: 100%; /* Ensure it doesn't overflow */
+    overflow: hidden; /* Hide any overflow */
 }
 
 /* Human messages - header on left */
