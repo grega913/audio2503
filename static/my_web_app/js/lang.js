@@ -19,8 +19,7 @@ function createMessageElement(json) {
         </div>
         <div class="message-body">${content}</div>
     `;
-  article.classList.add("message"); // Add Bulma's box class for styling
-  //message.classList.add(`message-${type}`);
+  article.classList.add("message", `message-${type}`);
 
   return article;
 }
