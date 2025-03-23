@@ -12,11 +12,9 @@ function createMessageElement(json) {
 
   const message = document.createElement("li");
   message.innerHTML = `
-        <div class="message-header">
-            <div class="message-type">${type()}</div>
-            <div class="message-timestamp">${new Date(timestamp).toLocaleTimeString()}</div>
-        </div>
-        <div class="message-content">${content}</div>
+        <div>${type}</div>
+        <div>${new Date(timestamp).toLocaleTimeString()}</div>
+        <div>${content}</div>
     `;
   message.classList.add(`message-${type}`);
 
