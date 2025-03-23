@@ -95,7 +95,6 @@ async def base(request: Request):
     return templates.TemplateResponse(request=request, name="base.html")
 
 
-
 @app.get("/favicon.ico", include_in_schema=False)
 async def favicon():
     return FileResponse("static/favicon.ico")
@@ -110,10 +109,6 @@ async def predict(x: float):
 @app.get("/items/{item_id}")
 async def read_item(item_id: int, request: Request):
     return {"item_id": item_id}
-
-
-
-
 
 
 @app.get("/itemz/{item_id}", response_class=HTMLResponse)
