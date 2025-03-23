@@ -11,6 +11,7 @@ from typing import List, Dict, Any
 import json
 from langgraph.types import Command, interrupt
 from prettyprinter import pprint
+from datetime import datetime
 
 templates = Jinja2Templates(directory="static/templates")
 
@@ -178,12 +179,14 @@ async def stream_graph_results_protected(item_id: str, data:dict, session_data: 
                         if "messages" in event:
                             last_message = event["messages"][-1]
 
-
                             
-                            yield json.dumps({
-                                "last_message": last_message.content,
-                                "message_type": get_message_type(last_message)
-                            }) + "\n"
+
+                            yield json.dumps({"last": [{
+                                "content": last_message.content,
+                                "type": get_message_type(last_message),
+                                "timestamp": datetime.now().isoformat()
+                                    }]
+                                }) + "\n"
                     
                     '''
                     chunk_size = 8
