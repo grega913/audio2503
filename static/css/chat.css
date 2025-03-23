@@ -1,4 +1,4 @@
-/* Base message styling */
+/* Messages container */
 #messages {
     display: flex;
     flex-direction: column;
@@ -21,6 +21,7 @@
     flex-direction: column;
     gap: 4px;
     white-space: pre-wrap; /* Preserve whitespace but allow wrapping */
+    padding-top: 28px; /* Add space for header */
 }
 
 /* Message type specific styling */
@@ -112,11 +113,6 @@
     color: #666;
 }
 
-/* Add relative positioning to messages */
-[class^="message-"] {
-    position: relative;
-    padding-top: 28px; /* Add space for header */
-}
 
 /* Animation for new messages */
 @keyframes fadeIn {
