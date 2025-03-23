@@ -1,7 +1,7 @@
 console.log("Sanity in lang.js");
 
 function createMessageElement(json) {
-  console.log(`createMessageElement with json: ${json}`);
+  console.log(`createMessageElement with json: ${JSON.stringify(json)}`);
 
   const lastMessage = json.last?.[0];
   if (!lastMessage) return null;
@@ -13,9 +13,7 @@ function createMessageElement(json) {
   const message = document.createElement("li");
   message.innerHTML = `
         <div class="message-content">${content}</div>
-        <div class="message-timestamp">${new Date(
-          timestamp
-        ).toLocaleTimeString()}</div>
+        <div class="message-timestamp">${new Date(timestamp).toLocaleTimeString()}</div>
     `;
   message.classList.add(`message-${type}`);
 
@@ -97,7 +95,7 @@ async function handleLangFormSubmit(event, item_id) {
     }
   } else {
     // Display an error message
-    alert("Error receiving name");
+    alert("error in handleLangFormSubmit");
   }
 }
 
