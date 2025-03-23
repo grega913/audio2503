@@ -45,35 +45,30 @@ async function handleLangFormSubmit(event, item_id) {
     while ((chunk = await reader.read())) {
       if (!chunk.done) {
         const chunkData = new TextDecoder("utf-8").decode(chunk.value);
-
         console.log(`${chunkData} in handleLangFormSubmit`);
-
-        
         const message = document.createElement("li");
-
 
         try {
           const json = JSON.parse(chunkData);
 
+          
+          const messageType = json.last[0].type;
+          const messageContent = json.last[0].content;
+          const messageTimestamp = json.last[0].timestamp  
 
 
-          const contentText = json.content;
+          console.log(messageType)
+          console.log(messageContent)
+          console.log(messageTimestamp)
+          console.log(" - - - - - - - - - ")
 
-          // Check if this is a human assistance request
-          if (humanAssistSection && json.type === "verification") {
-            humanAssistSection.classList.remove("is-hidden");
-            document.getElementById("verify-name").textContent = json.name || "";
-            document.getElementById("verify-birthday").textContent = json.birthday || "";
-          }
 
-          // Only create message if content exists
-          if (contentText && contentText.trim() !== "") {
-            message.innerHTML = `
-              <div class="message-content">${contentText}</div>
-              <div class="message-timestamp">${timestamp}</div>
-            `;
-            message.classList.add("message");
-          }
+
+
+
+
+                        
+
         } catch (error) {
           console.error("Error parsing JSON:", error);
           message.textContent = error;
@@ -81,7 +76,7 @@ async function handleLangFormSubmit(event, item_id) {
         }
 
         messagesArea.appendChild(message);
-        */
+        
         // Scroll to bottom of messages
         messagesArea.scrollTop = messagesArea.scrollHeight;
       } else {
