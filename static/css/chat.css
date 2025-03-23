@@ -76,4 +76,7 @@
     font-size: 1rem;
     line-height: 1.5;
     margin-top: 0.5rem;
+    background-color: inherit; /* Inherit background color from parent */
+    padding: 0.5rem;
+    border-radius: 0.25rem;
 }
