@@ -12,6 +12,17 @@ import json
 from langgraph.types import Command, interrupt
 from prettyprinter import pprint
 from datetime import datetime
+from typing import Dict, Any
+
+def create_message_response(last_message: Any) -> Dict[str, Any]:
+    """Create a standardized message response dictionary"""
+    return {
+        "last": [{
+            "content": last_message.content,
+            "type": get_message_type(last_message),
+            "timestamp": datetime.now().isoformat()
+        }]
+    }
 
 templates = Jinja2Templates(directory="static/templates")
 
@@ -181,12 +192,9 @@ async def stream_graph_results_protected(item_id: str, data:dict, session_data: 
 
                             
 
-                            yield json.dumps({"last": [{
-                                "content": last_message.content,
-                                "type": get_message_type(last_message),
-                                "timestamp": datetime.now().isoformat()
-                                    }]
-                                }) + "\n"
+                            response = create_message_response(last_message)
+                            ic(response)  # Print the response object
+                            yield json.dumps(response) + "\n"
                     
                     '''
                     chunk_size = 8
