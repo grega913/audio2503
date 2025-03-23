@@ -6,40 +6,43 @@
     padding: 1.5rem;
 }
 
-/* Base message styling using Bulma classes */
+/* Base message styling */
 .message {
     width: 85%;
+    padding: 1rem;
+    border-radius: 0.5rem;
     margin-bottom: 1rem;
+    position: relative;
 }
 
-/* Human message alignment */
-.message:has(.message-header p:first-child:contains("human")) {
+/* Human message styling */
+.message-human {
     margin-right: auto;
     background-color: #f5f5f5;
 }
 
-/* AI message alignment */
-.message:has(.message-header p:first-child:contains("ai")) {
+/* AI message styling */
+.message-ai {
     margin-left: auto;
     background-color: #3273dc;
     color: white;
 }
 
-/* Tool message alignment */
-.message:has(.message-header p:first-child:contains("tool")) {
+/* Tool message styling */
+.message-tool {
     margin-left: auto;
     background-color: #23d160;
     color: white;
 }
 
-/* System message alignment */
-.message:has(.message-header p:first-child:contains("system")) {
+/* System message styling */
+.message-system {
     margin-left: auto;
     background-color: #ffdd57;
 }
 
-/* Unknown message alignment */
-.message:has(.message-header p:first-child:contains("unknown")) {
+/* Unknown message styling */
+.message-unknown {
     margin-left: auto;
     background-color: #ff3860;
     color: white;
@@ -54,7 +57,7 @@
 }
 
 /* Message type styling */
-.message-header p:first-child {
+.message-type {
     font-size: 0.8rem;
     font-weight: bold;
     text-transform: uppercase;
@@ -62,7 +65,7 @@
 }
 
 /* Timestamp styling */
-.message-header p:last-child {
+.message-timestamp {
     font-size: 0.75rem;
     opacity: 0.8;
     margin-left: 0.5rem;
