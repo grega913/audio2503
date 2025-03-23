@@ -89,7 +89,7 @@
 .message-type {
     font-size: 0.7rem;
     font-weight: bold;
-    text-transform: uppercase;
+    text-transform: lowercase;
     color: #666;
     padding: 2px 6px;
     border-radius: 4px;
