@@ -10,17 +10,18 @@ function createMessageElement(json) {
 
   if (!content || content.trim() === "") return null;
 
-  const message = document.createElement("li");
-  message.innerHTML = `
+  const article = document.createElement("article");
+  article.innerHTML = `
         <div class="message-header">
-            <div class="message-type">${type}</div>
-            <div class="message-timestamp">${new Date(timestamp).toLocaleTimeString()}</div>
+            <p>${type}</p> 
+            <p>${new Date(timestamp).toLocaleTimeString()}</p>
         </div>
-        <div class="message-content">${content}</div>
+        <div class="message-body">${content}</div>
     `;
-  message.classList.add(`message-${type}`);
+  article.classList.add(`message`);
+  //message.classList.add(`message-${type}`);
 
-  return message;
+  return article;
 }
 
 // Reusable function to handle form submission //
@@ -66,7 +67,7 @@ async function handleLangFormSubmit(event, item_id) {
       if (!chunk.done) {
         const chunkData = new TextDecoder("utf-8").decode(chunk.value);
         console.log(`${chunkData} in handleLangFormSubmit`);
-        const message = document.createElement("li");
+        //const message = document.createElement("li");
 
         try {
           const json = JSON.parse(chunkData);
