@@ -138,19 +138,9 @@ async function handleHumanAssistFormSubmit(event, item_id) {
           console.log(`${chunkData} in handleHumanAssistFormSubmits`);
 
           const json = JSON.parse(chunkData);
-          const messages = json.messages || [];
-          const lastMessage = messages[messages.length - 1];
-          const contentText = lastMessage?.content || '';
-          const messageType = lastMessage?.type || 'unknown';
-
-          if (contentText && contentText.trim() !== "") {
-            const message = document.createElement("li");
-            const timestamp = new Date().toLocaleTimeString();
-            message.innerHTML = `
-              <div class="message-content">${contentText}</div>
-              <div class="message-timestamp">${timestamp}</div>
-            `;
-            message.classList.add("message", `message-${messageType}`);
+          const message = createMessageElement(json);
+          
+          if (message) {
             messagesArea.appendChild(message);
             messagesArea.scrollTop = messagesArea.scrollHeight;
           }
