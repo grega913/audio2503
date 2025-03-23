@@ -67,14 +67,15 @@
 /* Message header styling */
 .message-header {
     display: flex;
-    gap: 8px;
+    justify-content: space-between;
     align-items: center;
+    gap: 8px;
     margin-bottom: 4px;
     position: absolute;
     top: 4px;
-    white-space: nowrap; /* Prevent wrapping */
-    max-width: 100%; /* Ensure it doesn't overflow */
-    overflow: hidden; /* Hide any overflow */
+    white-space: nowrap;/* Prevent wrapping */
+    max-width: 100%;/* Ensure it doesn't overflow */
+    overflow: hidden;/* Hide any overflow */
 }
 
 /* Human messages - header on left */
@@ -91,6 +92,7 @@
 }
 
 .message-type {
+    margin-right: 8px;/* or margin-left */
     font-size: 0.7rem;
     font-weight: bold;
     text-transform: lowercase;
@@ -104,7 +106,7 @@
 .message-content {
     font-size: 0.9rem;
     line-height: 1.4;
-    margin-top: 24px; /* Make space for header */
+    margin-top: 12px; /* Make space for header */
 }
 
 /* Timestamp styling */
