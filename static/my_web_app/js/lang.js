@@ -11,6 +11,7 @@ function createMessageElement(json) {
   if (!content || content.trim() === "") return null;
 
   const article = document.createElement("article");
+ 
   article.innerHTML = `
         <div class="message-header">
             <p>${type}</p> 
@@ -18,7 +19,7 @@ function createMessageElement(json) {
         </div>
         <div class="message-body">${content}</div>
     `;
-  article.classList.add("message", "box"); // Add Bulma's box class for styling
+  article.classList.add("message"); // Add Bulma's box class for styling
   //message.classList.add(`message-${type}`);
 
   return article;
