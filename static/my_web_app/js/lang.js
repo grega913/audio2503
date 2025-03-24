@@ -1,14 +1,15 @@
 console.log("Sanity in lang.js");
 
 function createMessageElement(json) {
-  console.log(`createMessageElement with json: ${JSON.stringify(json)}`);
+  //console.log(`createMessageElement with json: ${JSON.stringify(json)}`);
 
   const lastMessage = json.last?.[0];
   if (!lastMessage) return null;
 
-  const { content, type, timestamp } = lastMessage;
+  const { content, type, timestamp, additional_kwargs, response_metadata } = lastMessage;
 
-  if (!content || content.trim() === "") return null;
+
+  //if (!content || content.trim() === "") return null;
 
   const article = document.createElement("article");
  
@@ -66,12 +67,13 @@ async function handleLangFormSubmit(event, item_id) {
     while ((chunk = await reader.read())) {
       if (!chunk.done) {
         const chunkData = new TextDecoder("utf-8").decode(chunk.value);
-        console.log(`${chunkData} in handleLangFormSubmit`);
-        //const message = document.createElement("li");
+        console.log(`in handleLangFormSubmit: ${chunkData}`);
+
 
         try {
           const json = JSON.parse(chunkData);
           const message = createMessageElement(json);
+          console.log(`message in try ${JSON.stringify(message)}`)
 
           if (message) {
             messagesArea.appendChild(message);
