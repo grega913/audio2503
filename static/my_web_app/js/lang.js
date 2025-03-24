@@ -1,8 +1,6 @@
 console.log("Sanity in lang.js");
 
-function createMessageElement(json) {
-  //console.log(`createMessageElement with json: ${JSON.stringify(json)}`);
-
+function createMessageElementAndCheckForHumanAssistance(json) {
   const lastMessage = json.last?.[0];
   if (!lastMessage) return null;
 
@@ -10,6 +8,8 @@ function createMessageElement(json) {
 
   // Handle AI messages with tool calls
   let toolCallsContent = '';
+  let showHumanAssist = false;
+  
   if (type === "ai" && !content && tool_calls) {
     toolCallsContent = `
       <div class="tool-calls">
@@ -17,10 +17,14 @@ function createMessageElement(json) {
         <pre>${JSON.stringify(tool_calls, null, 2)}</pre>
       </div>
     `;
+
+    // Check for human assistance tool call
+    if (tool_calls.some(tc => tc.function?.name === "human_assistance")) {
+      showHumanAssist = true;
+    }
   }
 
   const article = document.createElement("article");
- 
   article.innerHTML = `
         <div class="message-header">
             <p>${type}</p> 
@@ -32,6 +36,16 @@ function createMessageElement(json) {
         </div>
     `;
   article.classList.add("message", `message-${type}`);
+
+  // Show/hide human assist section
+  const humanAssistSection = document.getElementById("human-assist-section");
+  if (humanAssistSection) {
+    if (showHumanAssist) {
+      humanAssistSection.classList.remove("is-hidden");
+    } else {
+      humanAssistSection.classList.add("is-hidden");
+    }
+  }
 
   return article;
 }
@@ -83,7 +97,7 @@ async function handleLangFormSubmit(event, item_id) {
 
         try {
           const json = JSON.parse(chunkData);
-          const message = createMessageElement(json);
+          const message = createMessageElementAndCheckForHumanAssistance(json);
           console.log(`message in try ${JSON.stringify(message)}`)
 
           if (message) {
@@ -153,7 +167,7 @@ async function handleHumanAssistFormSubmit(event, item_id) {
           console.log(`${chunkData} in handleHumanAssistFormSubmits`);
 
           const json = JSON.parse(chunkData);
-          const message = createMessageElement(json);
+          const message = createMessageElementAndCheckForHumanAssistance(json);
 
           if (message) {
             messagesArea.appendChild(message);
