@@ -23,7 +23,9 @@ def create_message_response(last_message: Any) -> Dict[str, Any]:
         "last": [{
             "content": last_message.content,
             "type": get_message_type(last_message),
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
+            "additional_kwargs": getattr(last_message, "additional_kwargs", {}),
+            "response_metadata": getattr(last_message, "response_metadata", {})
         }]
     }
 
