@@ -6,10 +6,18 @@ function createMessageElement(json) {
   const lastMessage = json.last?.[0];
   if (!lastMessage) return null;
 
-  const { content, type, timestamp, additional_kwargs, response_metadata } = lastMessage;
+  const { content, type, timestamp, additional_kwargs, response_metadata, tool_calls } = lastMessage;
 
-
-  //if (!content || content.trim() === "") return null;
+  // Handle AI messages with tool calls
+  let toolCallsContent = '';
+  if (type === "ai" && !content && tool_calls) {
+    toolCallsContent = `
+      <div class="tool-calls">
+        <p>Tool calls requested:</p>
+        <pre>${JSON.stringify(tool_calls, null, 2)}</pre>
+      </div>
+    `;
+  }
 
   const article = document.createElement("article");
  
@@ -18,7 +26,10 @@ function createMessageElement(json) {
             <p>${type}</p> 
             <p>${new Date(timestamp).toLocaleTimeString()}</p>
         </div>
-        <div class="message-body">${content}</div>
+        <div class="message-body">
+          ${content || ''}
+          ${toolCallsContent}
+        </div>
     `;
   article.classList.add("message", `message-${type}`);
 
