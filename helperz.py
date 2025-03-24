@@ -19,13 +19,26 @@ from typing import Dict, Any
 def create_message_response(last_message: Any) -> Dict[str, Any]:
     """Create a standardized message response dictionary"""
     ic(f'create message response with last message being: {last_message}')
+    
+    message_type = get_message_type(last_message)
+    additional_kwargs = getattr(last_message, "additional_kwargs", {})
+    
+    # Handle AI messages with tool calls
+    if (message_type == "ai" and 
+        not last_message.content and 
+        "tool_calls" in additional_kwargs):
+        tool_calls = additional_kwargs["tool_calls"]
+    else:
+        tool_calls = None
+        
     return {
         "last": [{
             "content": last_message.content,
-            "type": get_message_type(last_message),
+            "type": message_type,
             "timestamp": datetime.now().isoformat(),
-            "additional_kwargs": getattr(last_message, "additional_kwargs", {}),
-            "response_metadata": getattr(last_message, "response_metadata", {})
+            "additional_kwargs": additional_kwargs,
+            "response_metadata": getattr(last_message, "response_metadata", {}),
+            "tool_calls": tool_calls
         }]
     }
 
