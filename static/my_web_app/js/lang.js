@@ -1,15 +1,23 @@
 console.log("Sanity in lang.js");
 
 function createMessageElementAndCheckForHumanAssistance(json) {
+  console.log("createMessageElementAndCheckForHumanAssistance");
   const lastMessage = json.last?.[0];
   if (!lastMessage) return null;
 
-  const { content, type, timestamp, additional_kwargs, response_metadata, tool_calls } = lastMessage;
+  const {
+    content,
+    type,
+    timestamp,
+    additional_kwargs,
+    response_metadata,
+    tool_calls,
+  } = lastMessage;
 
   // Handle AI messages with tool calls
-  let toolCallsContent = '';
+  let toolCallsContent = "";
   let showHumanAssist = false;
-  
+
   if (type === "ai" && !content && tool_calls) {
     toolCallsContent = `
       <div class="tool-calls">
@@ -19,7 +27,7 @@ function createMessageElementAndCheckForHumanAssistance(json) {
     `;
 
     // Check for human assistance tool call
-    if (tool_calls.some(tc => tc.function?.name === "human_assistance")) {
+    if (tool_calls.some((tc) => tc.function?.name === "human_assistance")) {
       showHumanAssist = true;
     }
   }
@@ -31,7 +39,7 @@ function createMessageElementAndCheckForHumanAssistance(json) {
             <p>${new Date(timestamp).toLocaleTimeString()}</p>
         </div>
         <div class="message-body">
-          ${content || ''}
+          ${content || ""}
           ${toolCallsContent}
         </div>
     `;
@@ -94,11 +102,10 @@ async function handleLangFormSubmit(event, item_id) {
         const chunkData = new TextDecoder("utf-8").decode(chunk.value);
         console.log(`in handleLangFormSubmit: ${chunkData}`);
 
-
         try {
           const json = JSON.parse(chunkData);
           const message = createMessageElementAndCheckForHumanAssistance(json);
-          console.log(`message in try ${JSON.stringify(message)}`)
+          console.log(`message in try ${JSON.stringify(message)}`);
 
           if (message) {
             messagesArea.appendChild(message);
@@ -164,12 +171,16 @@ async function handleHumanAssistFormSubmit(event, item_id) {
       while ((chunk = await reader.read())) {
         if (!chunk.done) {
           const chunkData = new TextDecoder("utf-8").decode(chunk.value);
-          console.log(`${chunkData} in handleHumanAssistFormSubmits`);
+          console.log(
+            `in handleHumanAssistFormSubmits, chunkData: ${chunkData}`
+          );
 
           const json = JSON.parse(chunkData);
           const message = createMessageElementAndCheckForHumanAssistance(json);
 
+
           if (message) {
+            console.log("we have a message here")
             messagesArea.appendChild(message);
             messagesArea.scrollTop = messagesArea.scrollHeight;
           }
@@ -185,11 +196,11 @@ async function handleHumanAssistFormSubmit(event, item_id) {
       if (humanAssistSection) {
         humanAssistSection.classList.add("is-hidden");
       }
-      document.getElementById("humanResponse").value = "";
+      //document.getElementById("humanResponse").value = "";
     }
   } catch (error) {
-    console.error("Error submitting human response:", error);
-    alert("Error submitting expert response");
+    console.error("Error in handleHumanAssistFormSubmit:", error);
+    alert(`Error in handleHumanAssistFormSubmit: ${error}`);
   }
 }
 

@@ -54,11 +54,14 @@ class GraphP5:
             tool_call_id: Annotated[str, InjectedToolCallId]
         ) -> str:
             """Request assistance from a human."""
+            ic("in human_assistance tool")
             human_response = interrupt({
                 "question": "Is this correct?",
                 "name": name,
                 "birthday": birthday,
             })
+
+            ic(human_response)
             
             if human_response.get("correct", "").lower().startswith("y"):
                 verified_name = name
@@ -140,14 +143,17 @@ if __name__ == "__main__":
 
     #config = {"configurable": {"thread_id": "1"}}
     config = {"recursion_limit": 10, "configurable": {"thread_id": "1" }}
-    '''
+
+
     user_input = (
         "Can you look up when LangGraph was released? When you have the answer, use the human_assistance tool for review."
     )
-    '''
+
+
     user_input = (
-        "When and where was Michelangelo born?"
+        "Can you look up when Leonardo DaVinci was born? When you have the answer, use the human_assistance tool for review."
     )
+
     
     num_events=0
     events = graph.stream(
@@ -172,7 +178,7 @@ if __name__ == "__main__":
 
 
 
-    '''
+    
 
     ic("#" * 50)
     time.sleep(5)
@@ -188,9 +194,17 @@ if __name__ == "__main__":
     human_command = Command(
         resume={
             "name": "LangGraph",
-            "birthday": "Jan 17, 2024",
+            "birthday": "Jan 19, 2024",
             },
     )
+
+    human_command = Command(
+        resume={
+            "name": "LDV",
+            "birthday": "Jan 10, 1555",
+            },
+    )
+
     events = graph.stream(human_command, config, stream_mode="values")
     for event in events:
         if "messages" in event:
@@ -199,18 +213,21 @@ if __name__ == "__main__":
     ic("#" * 50)
     time.sleep(5)
 
-    ic("last line:")
+
     snapshot = graph.get_state(config)
     ic("snapshot at the end:")
     ic("#" * 50)
 
     ic(snapshot)
     ic("#" * 50)
-    ic(snapshot.values.items())
-    ic("#" * 50)
 
 
-    { k: v for k, v in snapshot.values.items() if k in ("name", "birthday") }
 
-    '''
+    for key, value in snapshot.values.items():
+        if "name" in key and "birthday" in key:
+            pprint({key: value})
+
+
+
+    
 

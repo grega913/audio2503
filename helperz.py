@@ -20,8 +20,11 @@ def create_message_response(last_message: Any) -> Dict[str, Any]:
     """Create a standardized message response dictionary"""
     ic(f'create message response with last message being: {last_message}')
     
+    # we are also checking for tool_calls within additional_kwargs in ai messages without content
+
     message_type = get_message_type(last_message)
     additional_kwargs = getattr(last_message, "additional_kwargs", {})
+    response_metadata= getattr(last_message, "response_metadata", {})
     
     # Handle AI messages with tool calls
     if (message_type == "ai" and 
@@ -37,7 +40,7 @@ def create_message_response(last_message: Any) -> Dict[str, Any]:
             "type": message_type,
             "timestamp": datetime.now().isoformat(),
             "additional_kwargs": additional_kwargs,
-            "response_metadata": getattr(last_message, "response_metadata", {}),
+            "response_metadata": response_metadata,
             "tool_calls": tool_calls
         }]
     }

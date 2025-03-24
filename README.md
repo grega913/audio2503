@@ -14,6 +14,9 @@ Relevant Files and functions:
 - /api/lang_human_assist/{item_id} - taking care of streaming graph with human command
 - lang/part5.py - check basic implementation
 - static_my_web_ap/lang.js - logic for what to do in client (browser) - calling api routes and displaying html element by modifying css styles - is hidden/is not hidden . . .
+- playing a bit with the logic how/when to display "human_assist_section" div
+- got it to work with some problems. chatbot is throwing an Assertion error. So I commented out the asserion line in graphP5 chatbot node. But with doing that and using prompt from tutorial, I got 2 functions and it did not make it. Later, it worked. Anyway: this is the flow:
+- in lang5.html there's a `human-assist-sesction`, that is being hidden at beginning. So we are doing regular graph.stream, as normally., in `function stream_graph_results_protected`. We are sending BaseMessage through `create_message_response` function. Then in lang.js we have a function `createMessageElementAndCheckForHumanAssistance`. Here we check if we have a tool_call to the function `human_assistance`. If yes, we remove `is-hidden` class from element `human-assist-sesction`, which is displaying form for human assistance. Assistant here is filling the data and submitting it. This is calling a route `/api/lang_human_assist/{item_id}` with function stream_human_assist. Here we are calling graph.stream with `human_command`. Check part5.py for basic implementation.
 
 ## 20250322
 

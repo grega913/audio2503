@@ -111,8 +111,6 @@ async def stream_graph_results_public(item_id: str, data: dict):
             graph = lang_router.state.graphP1.get_compiled_graph()
         elif item_id == "2":
             graph = lang_router.state.graphP2.get_compiled_graph()
-        elif item_id == "4":
-            graph = lang_router.state.graphP4.get_compiled_graph()
         else:
             raise ValueError(f"Invalid graph number: {item_id}")
 
@@ -179,9 +177,12 @@ async def stream_graph_results_protected(item_id: str, data:dict, session_data: 
                     # simples version for sending last message's content to the client
                     
                     for event in events:
+                        num_events=+1
+                        ic(num_events)
+                        ic("#" * 100)
                         if "messages" in event:
                             last_message = event["messages"][-1]
-                            ic(last_message)
+                            #ic(last_message)
                             response = create_message_response(last_message)
                             ic(response)  # Print the response object
                             yield json.dumps(response) + "\n"
@@ -211,9 +212,9 @@ async def stream_graph_results_protected(item_id: str, data:dict, session_data: 
                 yield json.dumps({"error": str(e)}) + "\n"
 
             finally:
-                state = graph.get_state(config=config)
+                #state = graph.get_state(config=config)
                 ic("#" * 50)
-                pprint(state)
+                #pprint(state)
 
 
         return StreamingResponse(generate_stream(), media_type="text/event-stream")
@@ -231,8 +232,8 @@ async def stream_human_assist(item_id: str, data: dict, session_data: SessionDat
     ic(f'{item_id} in stream_human_assist')
     try:
         # Validate item_id and session
-        if item_id not in ["3", "4"]:
-            raise ValueError("Human assistance only available for item_id 3 or 4")
+        if item_id not in ["4", "5"]:
+            raise ValueError("Human assistance only available for item_id  4 or 5")
         if not session_data:
             raise HTTPException(status_code=401, detail="Session required for human assistance")
             
@@ -247,15 +248,19 @@ async def stream_human_assist(item_id: str, data: dict, session_data: SessionDat
         await compile_graph_once(lang_router, int(item_id))
         
         # Get appropriate graph
-        if item_id == "3":
-            graph = lang_router.state.graphP3.get_compiled_graph()
-        else:
+
+        if item_id == "4":
             graph = lang_router.state.graphP4.get_compiled_graph()
+        else:
+            graph = lang_router.state.graphP5.get_compiled_graph()
 
         # Create config with thread_id from session
         config = {"configurable": {"thread_id": session_data.usr}}
 
-        async def generate_stream():
+
+
+
+        async def generate_stream_human_assist():
             try:
                 # Create human command with response
                 human_command = Command(resume={"data": human_response})
@@ -269,14 +274,16 @@ async def stream_human_assist(item_id: str, data: dict, session_data: SessionDat
                 
                 for event in events:
                     if "messages" in event:
-                        ic(event["messages"][-1])
-                        content = event["messages"][-1].content
-                        yield json.dumps({"content": content}) + "\n"
+                        last_message = event["messages"][-1]
+                        #ic(last_message)
+                        response = create_message_response(last_message)
+                        ic(response)  # Print the response object
+                        yield json.dumps(response) + "\n"
                         
             except Exception as e:
                 yield json.dumps({"error": str(e)}) + "\n"
 
-        return StreamingResponse(generate_stream(), media_type="text/event-stream")
+        return StreamingResponse(generate_stream_human_assist(), media_type="text/event-stream")
 
     except ValueError as ve:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
