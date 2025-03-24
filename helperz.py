@@ -18,6 +18,7 @@ from typing import Dict, Any
 
 def create_message_response(last_message: Any) -> Dict[str, Any]:
     """Create a standardized message response dictionary"""
+    ic(f'create message response with last message being: {last_message}')
     return {
         "last": [{
             "content": last_message.content,
